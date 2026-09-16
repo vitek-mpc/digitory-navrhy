@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#111315">
+  <title>Zastavárna Casper – návrh nového webu</title>
+  <style>
+    :root{--bg:#101214;--bg2:#16191d;--card:#1c2024;--soft:#f3f0e9;--text:#f8f8f6;--muted:#a9b0b5;--ink:#191b1d;--gold:#d2ad63;--gold2:#f0d392;--line:#2d3237;--shadow:0 28px 70px rgba(0,0,0,.28)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);line-height:1.55}a{color:inherit;text-decoration:none}.container{width:min(1140px,calc(100% - 36px));margin:auto}.topnote{background:#0b0d0f;color:#c8cdd1;text-align:center;font-size:12px;padding:8px 12px;border-bottom:1px solid #202428}.nav{position:sticky;top:0;z-index:10;background:rgba(16,18,20,.88);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)}.nav-inner{height:74px;display:flex;align-items:center;justify-content:space-between;gap:24px}.brand{font-weight:800;letter-spacing:-.03em;font-size:21px}.brand b{color:var(--gold)}.links{display:flex;align-items:center;gap:24px;color:#d8dcdf;font-size:14px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:12px;padding:13px 18px;font-weight:750;border:1px solid transparent;transition:.2s}.btn-gold{background:var(--gold);color:#171717}.btn-gold:hover{background:var(--gold2);transform:translateY(-1px)}.btn-outline{border-color:#40464c;color:#fff;background:rgba(255,255,255,.02)}.btn-outline:hover{border-color:#777f87;background:#202428}.hero{padding:84px 0 74px;background:radial-gradient(circle at 82% 20%,rgba(210,173,99,.12),transparent 33%),linear-gradient(180deg,#111315 0%,#15181b 100%)}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--gold2);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:12px}.eyebrow:before{content:"";width:28px;height:1px;background:var(--gold)}h1{font-size:clamp(42px,6vw,76px);line-height:.98;letter-spacing:-.055em;margin:18px 0 22px;max-width:760px}.lead{font-size:19px;color:#bdc4c9;max-width:670px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:31px}.hero-card{position:relative;min-height:450px;border:1px solid #2f3439;border-radius:30px;background:linear-gradient(145deg,#1c2024,#131619);box-shadow:var(--shadow);overflow:hidden;padding:34px}.orb{position:absolute;border-radius:50%;filter:blur(.2px)}.orb.one{width:250px;height:250px;background:radial-gradient(circle at 30% 30%,#f3db9c,#a77c2f 60%,#5e461d);right:-55px;top:-50px;opacity:.82}.orb.two{width:180px;height:180px;background:linear-gradient(145deg,#353b41,#111417);left:-55px;bottom:-40px;border:1px solid #4c535a}.device{position:absolute;right:50px;bottom:48px;width:170px;height:280px;border-radius:30px;background:linear-gradient(160deg,#2d3338,#090b0d);border:7px solid #0a0c0e;box-shadow:0 25px 55px rgba(0,0,0,.4)}.device:before{content:"";position:absolute;left:50%;top:12px;transform:translateX(-50%);width:55px;height:6px;border-radius:6px;background:#050607}.device-screen{position:absolute;inset:18px 9px 9px;border-radius:18px;background:linear-gradient(180deg,#d2ad63,#7c5c23)}.goldbar{position:absolute;left:42px;top:90px;width:180px;height:94px;border-radius:14px;background:linear-gradient(145deg,#efd58f,#9f772d);box-shadow:0 20px 30px rgba(0,0,0,.23);transform:rotate(-8deg)}.goldbar:after{content:"Au";position:absolute;right:18px;bottom:13px;font-size:28px;color:#5a4017;font-weight:900}.section{padding:78px 0}.section.light{background:var(--soft);color:var(--ink)}.section h2{font-size:clamp(30px,4vw,48px);letter-spacing:-.035em;line-height:1.05;margin:0 0 14px}.sub{max-width:670px;color:#aeb5ba}.light .sub{color:#64696d}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}.card{border:1px solid var(--line);border-radius:18px;padding:24px;background:var(--card)}.light .card{background:white;border-color:#dedbd4}.icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:rgba(210,173,99,.12);color:var(--gold);font-size:22px;margin-bottom:18px}.light .icon{background:#f5ead2;color:#83621f}.card h3{margin:0 0 8px;font-size:19px}.card p{margin:0;color:#aab2b7;font-size:15px}.light .card p{color:#6b7074}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}.step{padding:28px;border-radius:18px;border:1px solid #dedbd4;background:#fff}.num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#171a1d;color:#fff;font-weight:800;margin-bottom:18px}.step h3{margin:0 0 8px}.step p{margin:0;color:#6c7174}.trust{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:start}.trust-list{display:grid;grid-template-columns:1fr 1fr;gap:14px}.trust-item{padding:22px;border:1px solid var(--line);border-radius:16px;background:#171a1d}.trust-item strong{display:block;margin-bottom:5px}.trust-item span{color:#aeb5ba;font-size:14px}.contact{display:grid;grid-template-columns:1fr .9fr;gap:30px;align-items:stretch}.contactbox{background:#171a1d;border:1px solid var(--line);border-radius:22px;padding:32px}.contactrow{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid #2d3237}.contactrow:last-child{border-bottom:0}.contactrow span{color:#aeb5ba}.hours{background:linear-gradient(145deg,#d2ad63,#b58c41);color:#151515;border-radius:22px;padding:32px}.hours h3{font-size:26px;margin-top:0}.hours-grid{display:grid;grid-template-columns:1fr auto;gap:10px 18px}.faq{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}.faq details{border:1px solid var(--line);background:#171a1d;border-radius:14px;padding:18px 20px}.faq summary{cursor:pointer;font-weight:750}.faq p{color:#adb4b9;margin-bottom:0;font-size:14px}.footer{border-top:1px solid #24282c;padding:28px 0 40px;color:#929aa0;font-size:13px}.footer-inner{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.proposal{color:var(--gold2)}
+    @media(max-width:900px){.links a:not(.btn){display:none}.hero{padding-top:58px}.hero-grid,.trust,.contact{grid-template-columns:1fr}.hero-card{min-height:390px}.cards{grid-template-columns:1fr 1fr}.steps{grid-template-columns:1fr}.faq{grid-template-columns:1fr}}
+    @media(max-width:600px){.container{width:min(100% - 24px,1140px)}.nav-inner{height:66px}.brand{font-size:18px}.nav .btn{padding:10px 13px}.hero{padding:48px 0 52px}h1{font-size:43px}.lead{font-size:17px}.actions{display:grid}.actions .btn{width:100%}.hero-card{min-height:330px;padding:20px}.device{width:125px;height:220px;right:26px;bottom:28px}.goldbar{left:24px;top:74px;width:145px;height:76px}.cards,.trust-list{grid-template-columns:1fr}.section{padding:58px 0}.contactbox,.hours{padding:24px}.contactrow{display:block}.contactrow span{display:block;margin-bottom:4px}}
+  </style>
+</head>
+<body>
+  <div class="topnote">Nezávazný návrh redesignu vytvořený týmem Digitory – nejde o oficiální web provozovny.</div>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top">Zastavárna <b>Casper</b></a>
+      <nav class="links">
+        <a href="#sluzby">Služby</a><a href="#jak">Jak to funguje</a><a href="#kontakt">Kontakt</a>
+        <a class="btn btn-gold" href="tel:+420736232307">Zavolat</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Havířov-Město</div>
+          <h1>Rychlé a diskrétní řešení, když potřebujete hotovost.</h1>
+          <p class="lead">Zástava a výkup zlata, stříbra, šperků a elektroniky. Osobní jednání na kamenné provozovně v Havířově.</p>
+          <div class="actions">
+            <a class="btn btn-gold" href="#jak">Zjistit možnosti zástavy</a>
+            <a class="btn btn-outline" href="tel:+420736232307">+420 736 232 307</a>
+          </div>
+        </div>
+        <div class="hero-card" aria-label="Ilustrační vizuál zlata a elektroniky">
+          <div class="orb one"></div><div class="orb two"></div><div class="goldbar"></div><div class="device"><div class="device-screen"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sluzby">
+      <div class="container">
+        <h2>Co u nás můžete vyřešit</h2>
+        <p class="sub">Přehled služeb bez hledání v dlouhém textu. Konkrétní podmínky a ocenění se řeší individuálně na provozovně.</p>
+        <div class="cards">
+          <article class="card"><div class="icon">◆</div><h3>Zlato a stříbro</h3><p>Zástava a výkup zlata, stříbra a šperků s individuálním posouzením.</p></article>
+          <article class="card"><div class="icon">▣</div><h3>Elektronika</h3><p>Mobilní telefony, notebooky, tablety, fotoaparáty a další spotřební elektronika.</p></article>
+          <article class="card"><div class="icon">↻</div><h3>Komisní prodej</h3><p>Možnost nabídnout vybrané zboží k prodeji formou komise.</p></article>
+          <article class="card"><div class="icon">◇</div><h3>Prodej zboží</h3><p>Nabídka šperků a elektroniky dostupná přímo na provozovně.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section light" id="jak">
+      <div class="container">
+        <h2>Jak to funguje</h2>
+        <p class="sub">Jednoduchý proces, který zákazník pochopí během několika vteřin.</p>
+        <div class="steps">
+          <article class="step"><div class="num">1</div><h3>Přinesete věc</h3><p>Navštívíte provozovnu s věcí, kterou chcete nabídnout k zástavě nebo výkupu.</p></article>
+          <article class="step"><div class="num">2</div><h3>Ocenění na místě</h3><p>Věc se individuálně posoudí a dozvíte se konkrétní možnosti dalšího postupu.</p></article>
+          <article class="step"><div class="num">3</div><h3>Domluva a vyřízení</h3><p>Pokud vám nabídka vyhovuje, domluvíte podmínky a vše vyřešíte přímo na provozovně.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container trust">
+        <div><div class="eyebrow">Proč Casper</div><h2>Diskrétně, osobně a bez zbytečného hledání informací.</h2><p class="sub">Návrh staví důvěru na jasně vysvětlené službě a rychlém kontaktu místo dlouhých bloků textu.</p></div>
+        <div class="trust-list">
+          <div class="trust-item"><strong>Diskrétní jednání</strong><span>Osobní řešení přímo na provozovně.</span></div>
+          <div class="trust-item"><strong>Individuální přístup</strong><span>Každá věc se posuzuje samostatně.</span></div>
+          <div class="trust-item"><strong>Rychlé vyřízení</strong><span>Kontaktní údaje i další krok jsou ihned viditelné.</span></div>
+          <div class="trust-item"><strong>Kamenná provozovna</strong><span>Dlouhá třída 468/13a, Havířov-Město.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section light" id="kontakt">
+      <div class="container contact">
+        <div class="contactbox">
+          <h2>Kontakt</h2>
+          <div class="contactrow"><span>Adresa</span><strong>Dlouhá třída 468/13a, 736 01 Havířov-Město</strong></div>
+          <div class="contactrow"><span>Telefon</span><strong><a href="tel:+420736232307">+420 736 232 307</a></strong></div>
+          <div class="contactrow"><span>E-mail</span><strong><a href="mailto:casper.finance@seznam.cz">casper.finance@seznam.cz</a></strong></div>
+        </div>
+        <aside class="hours"><h3>Otevírací doba</h3><div class="hours-grid"><span>Po–Pá</span><strong>9:00–18:00</strong><span>So</span><strong>9:00–12:00</strong><span>Ne</span><strong>Zavřeno</strong></div><a class="btn btn-outline" style="margin-top:24px;border-color:rgba(0,0,0,.22);color:#151515" href="tel:+420736232307">Zavolat na provozovnu</a></aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container"><h2>Časté otázky</h2><div class="faq">
+        <details><summary>Co je možné zastavit?</summary><p>Mezi uváděné kategorie patří zlato, stříbro, šperky, mobilní telefony, notebooky, tablety, fotoaparáty a spotřební elektronika. Konkrétní možnosti ověřte na provozovně.</p></details>
+        <details><summary>Jak probíhá ocenění?</summary><p>Věc je individuálně posouzena na provozovně. Konkrétní nabídka závisí na jejím typu a stavu.</p></details>
+        <details><summary>Je možný komisní prodej?</summary><p>Ano, mezi veřejně uváděné služby patří komisní prodej. Konkrétní podmínky vám sdělí na provozovně.</p></details>
+        <details><summary>Co si mám vzít s sebou?</summary><p>Požadavky se mohou lišit podle typu služby. Pro konkrétní informace doporučujeme před návštěvou zavolat na provozovnu.</p></details>
+      </div></div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><span>Zastavárna Casper · Havířov</span><span class="proposal">Nezávazný návrh redesignu – Digitory</span></div></footer>
+</body>
+</html>
