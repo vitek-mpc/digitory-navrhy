@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nástěnka A4</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f5f7;color:#171717;font-family:Arial,Helvetica,sans-serif}.app{width:min(980px,calc(100% - 18px));margin:12px auto 28px}.card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 8px 28px rgba(0,0,0,.08)}h1{margin:0 0 8px;font-size:clamp(24px,6vw,34px)}.intro{margin:0 0 18px;color:#666;line-height:1.45}label{display:block;font-weight:800;margin:16px 0 8px}input[type=file]{width:100%;padding:13px;border:1px dashed #bbb;border-radius:12px;background:#fafafa;font-size:16px}.badge{display:inline-block;margin-top:8px;padding:7px 10px;border-radius:999px;background:#f0f0f0;color:#666;font-size:12px;font-weight:800}.status{margin:12px 0 0;min-height:22px;font-size:14px;color:#444;line-height:1.4}.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:18px}.item{border:1px solid #e3e3e3;border-radius:14px;padding:12px;background:#fcfcfc}.thumb{width:100%;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#eee;display:flex;align-items:center;justify-content:center}.thumb img{width:100%;height:100%;object-fit:cover;display:block}.file-name{margin:8px 0;font-size:12px;color:#666;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}textarea{width:100%;min-height:86px;resize:vertical;padding:12px;border:1px solid #d2d2d2;border-radius:10px;font:700 16px Georgia,'Times New Roman',serif;line-height:1.35;background:#fff}textarea:focus{outline:2px solid #222;outline-offset:1px}.item-row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:9px}.mini{font-size:12px;color:#777}.buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}button{appearance:none;border:0;border-radius:12px;padding:14px 16px;font-size:16px;font-weight:800;cursor:pointer}.primary{background:#171717;color:#fff}.secondary{background:#ececec;color:#171717}.danger{background:#f7dddd;color:#982323}.remove{padding:8px 11px;font-size:13px}button:disabled{opacity:.45;cursor:not-allowed}.preview-title{font-weight:800;margin:24px 0 10px;font-size:20px}.preview-wrap{border:1px solid #ddd;border-radius:14px;overflow:hidden;background:#eee}canvas{display:block;width:100%;height:auto;background:white}.hint{margin:10px 0 0;font-size:13px;color:#777;line-height:1.45}.loading{opacity:.55;pointer-events:none}
+@media(max-width:640px){.app{width:calc(100% - 12px);margin-top:6px}.card{padding:14px;border-radius:14px}.items{grid-template-columns:1fr}.buttons{grid-template-columns:1fr}button{width:100%;padding:15px 14px;font-size:17px}.item{padding:10px}textarea{min-height:96px;font-size:17px}}
+@media print{body{background:#fff}.app,.card{margin:0;padding:0;width:auto;box-shadow:none}.no-print,.items,.intro,h1,.badge,.status,.preview-title,.hint{display:none!important}.preview-wrap{border:0;border-radius:0}canvas{width:210mm!important;height:297mm!important}}
+</style>
+</head>
+<body>
+<main class="app"><section class="card">
+<h1>Nástěnka – A4</h1>
+<p class="intro">Nahraj více fotek. Pod každou se objeví vlastní pole pro text. Fotky se na A4 skládají bez mezer a některé se mohou otočit o 90°, pokud se tak vejde víc kusů.</p>
+<div class="no-print">
+<label for="photoInput">1. Nahraj fotky</label>
+<input id="photoInput" type="file" accept="image/*" multiple>
+<div class="badge">Mobil + počítač • bez mezer • text pod fotkou • chytré otáčení</div>
+<div id="status" class="status">Nejdřív nahraj fotky.</div>
+<div id="items" class="items"></div>
+<div class="buttons">
+<button id="generateBtn" class="primary" type="button">Vytvořit A4</button>
+<button id="saveBtn" class="secondary" type="button" disabled>Uložit A4</button>
+<button id="printBtn" class="secondary" type="button" disabled>Vytisknout A4</button>
+<button id="clearBtn" class="danger" type="button">Smazat vše</button>
+</div>
+</div>
+<div class="preview-title">Náhled A4</div>
+<div class="preview-wrap"><canvas id="canvas"></canvas></div>
+<p class="hint no-print">Fotka se kvůli textu nezmenšuje. Text se pouze přidá pod ni. Textový box má čáru vlevo, vpravo a dole, nahoře navazuje přímo na fotku.</p>
+</section></main>
+<script>
+(() => {
+  const DPI = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) ? 180 : 240;
+  const CM = DPI / 2.54;
+  const PAGE_W = Math.round(21 * CM);
+  const PAGE_H = Math.round(29.7 * CM);
+  const MARGIN = Math.round(0.25 * CM);
+  const FONT_SIZE = Math.max(30, Math.round(0.43 * CM));
+  const LINE_HEIGHT = Math.round(FONT_SIZE * 1.2);
+  const TEXT_PAD_X = Math.max(10, Math.round(0.12 * CM));
+  const TEXT_PAD_Y = Math.max(10, Math.round(0.14 * CM));
+  const BORDER = Math.max(2, Math.round(DPI / 120));
+  const FONT = "Georgia, 'Times New Roman', serif";
+
+  const input = document.getElementById('photoInput');
+  const itemsEl = document.getElementById('items');
+  const statusEl = document.getElementById('status');
+  const generateBtn = document.getElementById('generateBtn');
+  const saveBtn = document.getElementById('saveBtn');
+  const printBtn = document.getElementById('printBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d', { alpha: false });
+
+  let items = [];
+  let generated = false;
+
+  function cm(v){ return Math.round(v * CM); }
+  function setStatus(t){ statusEl.textContent = t; }
+  function escapeHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+  function emptyPage(){
+    canvas.width = PAGE_W; canvas.height = PAGE_H;
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,PAGE_W,PAGE_H);
+    ctx.fillStyle='#aaa'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font=`bold ${Math.max(30,Math.round(PAGE_W*.035))}px Arial`;
+    ctx.fillText('Tady se zobrazí A4', PAGE_W/2, PAGE_H/2);
+  }
+  emptyPage();
+
+  async function loadImageFile(file){
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((resolve,reject)=>{
+        const im = new Image();
+        im.onload=()=>resolve(im); im.onerror=reject; im.src=url;
+      });
+      const maxSide = 1800;
+      const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+      const w = Math.max(1, Math.round(img.naturalWidth * scale));
+      const h = Math.max(1, Math.round(img.naturalHeight * scale));
+      const c = document.createElement('canvas'); c.width=w; c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      const preview = c.toDataURL('image/jpeg',0.82);
+      return { source:c, w, h, preview };
+    } finally { URL.revokeObjectURL(url); }
+  }
+
+  function renderItems(){
+    itemsEl.innerHTML = items.map((it,i)=>`<div class="item">
+      <div class="thumb"><img src="${it.preview}" alt="Fotka ${i+1}"></div>
+      <div class="file-name">${i+1}. ${escapeHtml(it.name)}</div>
+      <textarea data-i="${i}" placeholder="Napiš text pod tuto fotku…">${escapeHtml(it.caption)}</textarea>
+      <div class="item-row"><span class="mini">Text bude tučný a pod fotkou</span><button class="danger remove" data-remove="${i}" type="button">Smazat</button></div>
+    </div>`).join('');
+
+    itemsEl.querySelectorAll('textarea').forEach(t=>t.addEventListener('input',e=>{
+      items[Number(e.target.dataset.i)].caption=e.target.value;
+      generated=false; saveBtn.disabled=true; printBtn.disabled=true;
+    }));
+    itemsEl.querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',e=>{
+      items.splice(Number(e.currentTarget.dataset.remove),1); renderItems();
+      generated=false; saveBtn.disabled=true; printBtn.disabled=true;
+      setStatus(items.length?`Nahráno ${items.length} fotek.`:'Nejdřív nahraj fotky.');
+      if(!items.length) emptyPage();
+    }));
+  }
+
+  input.addEventListener('change', async()=>{
+    const files = Array.from(input.files||[]);
+    if(!files.length) return;
+    document.body.classList.add('loading');
+    setStatus(`Načítám 0 z ${files.length} fotek…`);
+    let ok=0, fail=0;
+    for(let i=0;i<files.length;i++){
+      try{
+        const d=await loadImageFile(files[i]);
+        items.push({name:files[i].name,caption:'',...d}); ok++;
+        renderItems();
+      }catch(e){ console.error(e); fail++; }
+      setStatus(`Načítám ${i+1} z ${files.length} fotek…`);
+      await new Promise(r=>setTimeout(r,0));
+    }
+    document.body.classList.remove('loading');
+    input.value='';
+    setStatus(`Nahráno ${ok} fotek${fail?`, ${fail} se nepodařilo načíst`:''}. Ke každé můžeš napsat text.`);
+  });
+
+  function wrap(text,maxWidth){
+    ctx.font=`bold ${FONT_SIZE}px ${FONT}`;
+    const out=[];
+    for(const p of (text||'').trim().split(/\n/)){
+      if(!p.trim()){ if(out.length) out.push(''); continue; }
+      let line='';
+      for(const word of p.trim().split(/\s+/)){
+        const test=line?line+' '+word:word;
+        if(ctx.measureText(test).width<=maxWidth){line=test;}
+        else{
+          if(line) out.push(line);
+          if(ctx.measureText(word).width<=maxWidth){line=word;}
+          else{
+            let chunk='';
+            for(const ch of word){
+              if(chunk && ctx.measureText(chunk+ch).width>maxWidth){out.push(chunk);chunk=ch}else chunk+=ch;
+            }
+            line=chunk;
+          }
+        }
+      }
+      if(line) out.push(line);
+    }
+    return out;
+  }
+
+  function metrics(it){
+    const ratio=it.h/it.w;
+    let pw,ph;
+    if(ratio>1.05){ ph=cm(10); pw=Math.round(ph/ratio); }
+    else if(ratio<0.95){ pw=cm(9.8); ph=Math.round(pw*ratio); }
+    else { pw=cm(8.8); ph=Math.round(pw*ratio); }
+    const lines=it.caption.trim()?wrap(it.caption,pw-2*TEXT_PAD_X):[];
+    const textH=lines.length ? TEXT_PAD_Y*2 + lines.length*LINE_HEIGHT : 0;
+    return {pw,ph,lines,textH,w:pw,h:ph+textH};
+  }
+
+  function pack(entries, rotateMode){
+    const placed=[]; let x=MARGIN,y=MARGIN,rowH=0;
+    for(const e of entries){
+      const variants=[];
+      const n={rot:false,w:e.m.w,h:e.m.h};
+      const r={rot:true,w:e.m.h,h:e.m.w};
+      if(rotateMode==='always') variants.push(r,n);
+      else if(rotateMode==='auto') variants.push(n,r);
+      else variants.push(n);
+      let pick=null;
+      for(const v of variants){ if(x+v.w<=PAGE_W-MARGIN && y+v.h<=PAGE_H-MARGIN){pick=v;break;} }
+      if(!pick){ x=MARGIN; y+=rowH; rowH=0;
+        for(const v of variants){ if(x+v.w<=PAGE_W-MARGIN && y+v.h<=PAGE_H-MARGIN){pick=v;break;} }
+      }
+      if(!pick) continue;
+      placed.push({e,x,y,...pick}); x+=pick.w; rowH=Math.max(rowH,pick.h);
+    }
+    return placed;
+  }
+
+  function bestLayout(entries){
+    const orderings=[
+      entries.slice(),
+      entries.slice().sort((a,b)=>b.m.h-a.m.h),
+      entries.slice().sort((a,b)=>b.m.w-a.m.w),
+      entries.slice().sort((a,b)=>(b.m.w*b.m.h)-(a.m.w*a.m.h)),
+      entries.slice().sort((a,b)=>(a.m.w*a.m.h)-(b.m.w*b.m.h))
+    ];
+    let best=[];
+    for(const ord of orderings){
+      for(const mode of ['auto','always']){
+        const p=pack(ord,mode);
+        if(p.length>best.length) best=p;
+        else if(p.length===best.length){
+          const area=p.reduce((s,z)=>s+z.w*z.h,0), barea=best.reduce((s,z)=>s+z.w*z.h,0);
+          if(area>barea) best=p;
+        }
+      }
+    }
+    return best;
+  }
+
+  function drawEntry(p){
+    const {e,x,y,rot}=p; const m=e.m;
+    ctx.save();
+    if(!rot){ drawCard(e.it,m,x,y); }
+    else{
+      ctx.translate(x+m.h,y);
+      ctx.rotate(Math.PI/2);
+      drawCard(e.it,m,0,0);
+    }
+    ctx.restore();
+  }
+
+  function drawCard(it,m,x,y){
+    ctx.fillStyle='#fff'; ctx.fillRect(x,y,m.w,m.h);
+    ctx.drawImage(it.source,x,y,m.pw,m.ph);
+    if(m.lines.length){
+      const ty=y+m.ph;
+      ctx.fillStyle='#fff'; ctx.fillRect(x,ty,m.pw,m.textH);
+      ctx.strokeStyle='#111'; ctx.lineWidth=BORDER;
+      ctx.beginPath();
+      ctx.moveTo(x+BORDER/2,ty); ctx.lineTo(x+BORDER/2,ty+m.textH-BORDER/2);
+      ctx.lineTo(x+m.pw-BORDER/2,ty+m.textH-BORDER/2);
+      ctx.lineTo(x+m.pw-BORDER/2,ty); ctx.stroke();
+      ctx.fillStyle='#111'; ctx.font=`bold ${FONT_SIZE}px ${FONT}`; ctx.textAlign='center'; ctx.textBaseline='top';
+      let yy=ty+TEXT_PAD_Y;
+      for(const line of m.lines){ctx.fillText(line,x+m.pw/2,yy,m.pw-2*TEXT_PAD_X);yy+=LINE_HEIGHT;}
+    }
+  }
+
+  generateBtn.addEventListener('click',()=>{
+    if(!items.length){alert('Nejdřív nahraj fotky.');return;}
+    setStatus('Skládám A4…');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      try{
+        canvas.width=PAGE_W; canvas.height=PAGE_H;
+        ctx.fillStyle='#fff'; ctx.fillRect(0,0,PAGE_W,PAGE_H);
+        const entries=items.map((it,i)=>({it,i,m:metrics(it)}));
+        const placed=bestLayout(entries);
+        for(const p of placed) drawEntry(p);
+        generated=placed.length>0; saveBtn.disabled=!generated; printBtn.disabled=!generated;
+        const rotated=placed.filter(p=>p.rot).length;
+        setStatus(`Na A4 se vešlo ${placed.length} z ${items.length} fotek${rotated?` • otočeno ${rotated}`:''}.`);
+        document.querySelector('.preview-title').scrollIntoView({behavior:'smooth',block:'start'});
+      }catch(err){
+        console.error(err); generated=false; saveBtn.disabled=true; printBtn.disabled=true;
+        setStatus('A4 se nepodařilo vytvořit. Zkus méně fotek najednou.');
+        alert('A4 se nepodařilo vytvořit. Zkus méně fotek najednou.');
+      }
+    }));
+  });
+
+  saveBtn.addEventListener('click',()=>{
+    if(!generated) return;
+    canvas.toBlob(async blob=>{
+      if(!blob){alert('Obrázek se nepodařilo vytvořit.');return;}
+      const file=new File([blob],'nastenka-a4.png',{type:'image/png'});
+      if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+        try{await navigator.share({files:[file],title:'Nástěnka A4'});return;}catch(e){if(e.name==='AbortError')return;}
+      }
+      const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='nastenka-a4.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),1500);
+    },'image/png');
+  });
+
+  printBtn.addEventListener('click',()=>{
+    if(!generated)return;
+    window.print();
+  });
+
+  clearBtn.addEventListener('click',()=>{
+    items=[]; input.value=''; itemsEl.innerHTML=''; generated=false; saveBtn.disabled=true; printBtn.disabled=true; emptyPage(); setStatus('Vše smazáno. Nahraj nové fotky.');
+  });
+})();
+</script>
+</body>
+</html>
