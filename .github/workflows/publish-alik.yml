@@ -1,0 +1,31 @@
+name: Publish ALIK routes
+
+on:
+  push:
+    paths:
+      - 'alik-routes.zip'
+
+permissions:
+  contents: write
+
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack proposal sites
+        shell: bash
+        run: |
+          if [ ! -f alik-routes.zip ]; then
+            exit 0
+          fi
+          unzip -o alik-routes.zip
+          rm alik-routes.zip
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Publish 23 ALIK website proposals"
+          git push
