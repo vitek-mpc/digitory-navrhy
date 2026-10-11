@@ -88,3 +88,74 @@ jobs:
               except Exception as e:print("ALT",u,repr(e),flush=True)
             sys.exit(1)
           PY
+
+      - name: Browser QA on desktop and mobile
+        shell: bash
+        run: |
+          set -eu
+          npm install --prefix /tmp/alik-browser --no-save --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          mkdir -p /tmp/alik-screens
+          node <<'JS'
+          const { chromium }=require('/tmp/alik-browser/node_modules/playwright-core');
+          const fs=require('fs');
+          const slugs=['dragoo-detailing','tesarstvi-domino','strechy-ciml','welding-masters','kaan-interiery','truhlarna-jezek','danielovy-zahrady','freihand-brno-tattoo','bufo-bufo-tattoo','under-skin-tattoo','josef-hrancik','patanracing-detailing','tattoo-studio-veratattoo','sbeauty-kosmeticky-salon','studio-new-image','wickid-tattoo','the-salon','vase-pergoly','studio-crinis','kosmeticke-studio-slunce','kosmeticke-studio-mija','kadernictvi-marketa-mikesova'];
+          const bin=['/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium'].find(x=>fs.existsSync(x));
+          async function run(){
+            let browser;
+            if (!bin) { console.log('Browser not present; cannot complete browser QA'); process.exit(1) }
+            browser=await chromium.launch({executablePath:bin,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+            let failures=[];
+            for(const viewport of [{width:1440,height:900},{width:390,height:844}]){
+              const page=await browser.newPage({viewport,deviceScaleFactor:1});
+              for(const [i,slug] of slugs.entries()){
+                const problems=[];
+                try{
+                  const response=await page.goto('https://navrhy.digitory.cz/'+slug+'/',{waitUntil:'domcontentloaded',timeout:20000});
+                  if(response.status()!=200)problems.push('status '+response.status());
+                  await page.evaluate(async()=>{
+                    const imgs=[...document.images].slice(0,4);
+                    await Promise.race([Promise.all(imgs.map(i=>i.complete?true:new Promise(res=>{i.onload=res;i.onerror=res}))),new Promise(res=>setTimeout(res,9000))]);
+                  });
+                  const data=await page.evaluate(()=>({
+                    width:document.documentElement.scrollWidth,
+                    viewport:innerWidth,
+                    visiblePhotos:[...document.images].filter(img=>img.getBoundingClientRect().width>0).length,
+                    broken:[...document.images].filter(img=>img.complete && img.naturalWidth===0).map(img=>img.currentSrc),
+                    ctas:[...document.querySelectorAll('a[href^="tel:"]')].length,
+                    mailtos:[...document.querySelectorAll('a[href^="mailto:"]')].length,
+                    menu:document.querySelector('[data-menu]')!==null
+                  }));
+                  if(data.width>data.viewport+4)problems.push('horizontal overflow '+data.width+'px / '+data.viewport+'px');
+                  if(data.broken.length)problems.push('broken images '+data.broken.length+': '+data.broken[0]);
+                  if(!data.visiblePhotos)problems.push('no photos visible');
+                  if(!data.ctas || !data.mailtos)problems.push('missing contact CTA');
+                  if(viewport.width===390) {
+                    const menu=page.locator('[data-menu]');
+                    if(await menu.isVisible()) {
+                      await menu.click();
+                      if(!(await page.locator('#menu').evaluate(el=>el.classList.contains('open'))))problems.push('mobile menu failed');
+                      await menu.click();
+                    } else problems.push('mobile menu invisible');
+                  }
+                  if(i<4)await page.screenshot({path:'/tmp/alik-screens/'+slug+'-'+viewport.width+'.png',fullPage:true,animations:'disabled'});
+                }catch(e){problems.push(String(e).slice(0,180))}
+                const ok=!problems.length;
+                console.log(ok?'PASS_BROWSER':'FAIL_BROWSER',viewport.width,slug,problems.join(' | '));
+                if(!ok)failures.push([viewport.width,slug,problems])
+              }
+              await page.close();
+            }
+            await browser.close();
+            console.log('BROWSER_SUMMARY total:',slugs.length*2,'fail:',failures.length);
+            if(failures.length)process.exit(1);
+          }
+          run().catch(e=>{console.error(e);process.exit(1)});
+          JS
+      - name: Upload QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: alik-qa-screens
+          path: /tmp/alik-screens
+          retention-days: 7
+          if-no-files-found: ignore
