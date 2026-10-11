@@ -1,0 +1,90 @@
+name: Verify ALIK 3.0 public sites
+
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-alik-30.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Check DNS and 22 public sites (desktop and mobile assets)
+        shell: bash
+        run: |
+          echo "::group::DNS"
+          getent ahosts navrhy.digitory.cz || true
+          echo "::endgroup::"
+          python3 - <<'PY'
+          import urllib.request, urllib.error, ssl, concurrent.futures, html, re, sys
+          ROOT="https://navrhy.digitory.cz"
+          sites={
+            "dragoo-detailing":"Dragoo Detailing",
+            "tesarstvi-domino":"Tesařství Domino",
+            "strechy-ciml":"Střechy Ciml",
+            "welding-masters":"Welding Masters",
+            "kaan-interiery":"KAAN INTERIÉRY",
+            "truhlarna-jezek":"Truhlárna Ježek",
+            "danielovy-zahrady":"Danielovy zahrady",
+            "freihand-brno-tattoo":"Freihand Brno Tattoo",
+            "bufo-bufo-tattoo":"BUFO BUFO tattoo",
+            "under-skin-tattoo":"UNDER SKIN TATTOO",
+            "josef-hrancik":"Josef Hrančík",
+            "patanracing-detailing":"Paťanracing Detailing",
+            "tattoo-studio-veratattoo":"Tattoo studio Veratattoo",
+            "sbeauty-kosmeticky-salon":"Sbeauty kosmetický salon",
+            "studio-new-image":"Studio New Image",
+            "wickid-tattoo":"Wickid Tattoo",
+            "the-salon":"THE SALON",
+            "vase-pergoly":"Vaše Pergoly",
+            "studio-crinis":"Studio Crinis",
+            "kosmeticke-studio-slunce":"Kosmetické studio Slunce",
+            "kosmeticke-studio-mija":"Kosmetické studio MiJa",
+            "kadernictvi-marketa-mikesova":"Kadeřnictví Markéta Mikešová",
+          }
+          def get(url):
+            req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 ALIK-QA/1.0","Accept":"text/html,*/*"})
+            with urllib.request.urlopen(req,timeout=22,context=ssl.create_default_context()) as r:
+              return r.status,r.geturl(),r.read(1_000_000).decode("utf-8",errors="replace")
+          def check(item):
+            slug,name=item
+            problems=[]
+            for suffix in ("","sluzby/","o-nas/","kontakt/"):
+              url=f"{ROOT}/{slug}/{suffix}"
+              try:
+                status,end,body=get(url)
+                if status!=200: problems.append(f"{suffix}: HTTP {status}")
+                if name not in html.unescape(body): problems.append(f"{suffix}: wrong company")
+                if '<meta name="viewport"' not in body: problems.append(f"{suffix}: viewport absent")
+                if suffix=="":
+                  if "/assets/alik-30.css" not in body: problems.append("stylesheet absent")
+                  if "/assets/alik-30.js" not in body: problems.append("interaction script absent")
+                  if 'tel:' not in body: problems.append("phone CTA absent")
+                  if 'mailto:' not in body: problems.append("email CTA absent")
+              except Exception as e:
+                problems.append(f"{suffix or 'home'}: {type(e).__name__}: {str(e)[:100]}")
+            return slug,problems
+          try:
+            for asset in ["/assets/alik-30.css","/assets/alik-30.js"]:
+              status,_,body=get(ROOT+asset)
+              print("ASSET",asset,status,"bytes",len(body),flush=True)
+          except Exception as e: print("ASSET ERROR",repr(e),flush=True)
+          with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:
+            results=list(ex.map(check,sites.items()))
+          errors=[]
+          for slug,problems in results:
+            print(("PASS" if not problems else "FAIL"),ROOT+"/"+slug+"/",(" | ".join(problems) if problems else "4 pages OK"),flush=True)
+            if problems: errors.append((slug,problems))
+          print("SUMMARY: sites",len(sites),"passed",len(sites)-len(errors),"failed",len(errors),flush=True)
+          if errors:
+            for u in ("https://vitek-mpc.github.io/digitory-navrhy/dragoo-detailing/","https://digitory-navrhy.netlify.app/dragoo-detailing/"):
+              try:
+                status,end,body=get(u);print("ALT",u,status,end,len(body),flush=True)
+              except Exception as e:print("ALT",u,repr(e),flush=True)
+            sys.exit(1)
+          PY
