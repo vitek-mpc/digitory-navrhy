@@ -1,0 +1,131 @@
+name: Verify Digitory 19 October proposals
+
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-alik-oct19.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-public-sites:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check all public pages and contacts
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request, concurrent.futures, html, sys
+          BASE="https://navrhy.digitory.cz"
+          with open("assets/alik-v4-data.json",encoding="utf-8") as f:
+              sites=json.load(f)["firms"]
+          assert len(sites)==68,len(sites)
+          def get(url):
+              req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 Digitory QA","Accept":"text/html,*/*"})
+              with urllib.request.urlopen(req,timeout=22) as res:
+                  return res.status,res.read(1_000_000).decode("utf-8","replace")
+          def test(item):
+              url,p,suffix=item
+              try:
+                  status,body=get(url)
+                  reasons=[]
+                  if status!=200:reasons.append(f"HTTP {status}")
+                  if p["name"] not in html.unescape(body):reasons.append("incorrect company")
+                  if "<meta name=\"viewport\"" not in body:reasons.append("viewport missing")
+                  if not suffix and p["email"] not in body:reasons.append("email missing")
+                  if not suffix and "/assets/alik-v4.css" not in body:reasons.append("CSS missing")
+                  if not suffix and "/assets/alik-v4.js" not in body:reasons.append("JS missing")
+                  return url,reasons
+              except Exception as e:
+                  return url,[str(e)[:150]]
+          todo=[(f"{BASE}/2026-10-19/{p['slug']}/{suffix}",p,suffix) for p in sites for suffix in ("","sluzby/","o-firme/","kontakt/")]
+          with concurrent.futures.ThreadPoolExecutor(max_workers=15) as pool:
+              result=list(pool.map(test,todo))
+          fail=[(u,probs) for u,probs in result if probs]
+          for u,why in fail: print("HTTP_FAIL",u,why,flush=True)
+          for asset in ("alik-v4.css","alik-v4.js","alik-v4-data.json"):
+              status,body=get(f"{BASE}/assets/{asset}")
+              print("ASSET",asset,status,"bytes",len(body),flush=True)
+          print("SITE_TOTAL",len(sites),"PAGE_TOTAL",len(result),"HTTP_PASSED",len(result)-len(fail),"HTTP_FAILED",len(fail),flush=True)
+          if fail:sys.exit(1)
+          PY
+      - name: Browser QA desktop/mobile for all 68 sites
+        shell: bash
+        run: |
+          set -eu
+          npm install --prefix /tmp/alikqa --no-save --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          mkdir -p /tmp/alik-shots
+          cat > /tmp/alikqa/test.cjs <<'JS'
+          const {chromium}=require('playwright-core');
+          const data=require(process.cwd()+'/assets/alik-v4-data.json').firms;
+          const fs=require('fs');
+          const bin=['/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium'].find(fs.existsSync);
+          if(!bin)throw Error('Chrome not installed');
+          const BASE='https://navrhy.digitory.cz/2026-10-19';
+          (async()=>{
+            const b=await chromium.launch({headless:true,executablePath:bin,args:['--no-sandbox','--disable-dev-shm-usage']});
+            const issues=[], seenScreens=new Set();
+            for(const size of [{width:1440,height:900},{width:390,height:844}]){
+              for(let i=0;i<data.length;i+=5){
+                const batch=data.slice(i,i+5);
+                await Promise.all(batch.map(async p=>{
+                  const page=await b.newPage({viewport:size,deviceScaleFactor:1});
+                  const errors=[];
+                  try{
+                    const url=BASE+'/'+p.slug+'/';
+                    const res=await page.goto(url,{timeout:24000,waitUntil:'domcontentloaded'});
+                    if(res.status()!==200)errors.push('HTTP '+res.status());
+                    await page.locator('img.cover-photo').evaluate(async img=>{
+                      if(!img.complete){await Promise.race([new Promise(resolve=>{img.onload=resolve;img.onerror=resolve}),new Promise(resolve=>setTimeout(resolve,7000))])}
+                    });
+                    const d=await page.evaluate(()=>({
+                      overflow:document.documentElement.scrollWidth-innerWidth,
+                      hero:document.querySelector('img.cover-photo')?.naturalWidth||0,
+                      phone:[...document.querySelectorAll('a[href^="tel:"]')].length,
+                      mail:[...document.querySelectorAll('a[href^="mailto:"]')].length,
+                      links:[...document.querySelectorAll('nav a')].length,
+                      header:!!document.querySelector('header'),
+                    }));
+                    if(d.overflow>4)errors.push('horizontal overflow '+d.overflow);
+                    if(!d.hero)errors.push('missing hero image');
+                    if(!d.mail)errors.push('missing email CTA');
+                    if(p.phone&&!d.phone)errors.push('missing phone CTA');
+                    if(d.links<4||!d.header)errors.push('bad navigation');
+                    if(size.width===390){
+                      const menu=page.locator('.menu-toggle');
+                      if(!(await menu.isVisible()))errors.push('menu not visible');
+                      else{
+                        await menu.click();
+                        if(!(await page.locator('#mainmenu').evaluate(x=>x.classList.contains('open'))))errors.push('mobile menu did not open');
+                        await menu.click();
+                      }
+                    }
+                    if(!seenScreens.has(p.sector) && size.width===1440){
+                       await page.screenshot({path:'/tmp/alik-shots/'+p.sector+'-'+p.slug+'-desktop.png',fullPage:true,timeout:15000});
+                       seenScreens.add(p.sector);
+                    }
+                  }catch(e){errors.push(String(e).slice(0,200))}
+                  if(errors.length)issues.push({slug:p.slug,viewport:size.width,errors});
+                  console.log(errors.length?'BROWSER_FAIL':'BROWSER_PASS',size.width,p.slug,errors.join(' | '));
+                  await page.close();
+                }));
+              }
+            }
+            await b.close();
+            console.log('BROWSER_SUMMARY',JSON.stringify({sites:data.length,total:data.length*2,failed:issues.length,issues}));
+            if(issues.length)process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node /tmp/alikqa/test.cjs
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: digitory-oct19-screenshots
+          path: /tmp/alik-shots
+          retention-days: 7
+          if-no-files-found: ignore
