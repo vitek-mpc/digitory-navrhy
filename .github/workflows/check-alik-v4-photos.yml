@@ -1,0 +1,46 @@
+name: Check image sources for Digitory proposals
+
+on:
+  push:
+    paths:
+      - '.github/workflows/check-alik-v4-photos.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  photos:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify every distinct illustrative photo used on new sites
+        run: |
+          python3 - <<'PY'
+          import glob,re,urllib.request,concurrent.futures
+          files=glob.glob('2026-10-19/*/index.html')
+          ids={}
+          for f in files:
+              s=open(f,encoding='utf8').read()
+              for id in re.findall(r'https://images\.unsplash\.com/(photo-[a-zA-Z0-9-]+)',s):
+                  ids.setdefault(id,set()).add(f.split('/')[1])
+          print('WEBSITES',len(files),'UNIQUE_IMAGES',len(ids),flush=True)
+          def check(t):
+              id,names=t
+              url='https://images.unsplash.com/'+id+'?w=180&q=55&auto=format'
+              req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 (compatible; DigitoryAudit/1.0)'})
+              try:
+                  with urllib.request.urlopen(req,timeout=16) as r:
+                      r.read(2048)
+                      return id,r.status,sorted(names)
+              except Exception as e:return id,str(e)[:120],sorted(names)
+          with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
+              results=list(pool.map(check,ids.items()))
+          failed=[]
+          for id,status,names in results:
+              print('IMAGE',id,status,'used-by',len(names),'firms',','.join(names[:3]),flush=True)
+              if status!=200:failed.append(id)
+          print('BROKEN_IMAGES',len(failed),failed,flush=True)
+          if failed:raise SystemExit(1)
+          PY
