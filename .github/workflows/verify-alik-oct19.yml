@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - '.github/workflows/verify-alik-oct19.yml'
+      - '2026-10-19/**'
+      - 'assets/alik-v4.css'
+      - 'assets/alik-v4.js'
   workflow_dispatch:
 
 permissions:
