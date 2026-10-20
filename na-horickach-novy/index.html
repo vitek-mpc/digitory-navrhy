@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#17241d">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Restaurace Na Hořičkách – poctivá česká kuchyně, štědré porce a místo, kam se rádi vracíte. Hořičky 3, rezervace na +420 770 674 581.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Na Hořičkách — poctivě, s chutí, spolu.">
+<meta property="og:description" content="Místo pro dobrou českou kuchyni, setkávání a chvíle, které nikam nespěchají.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1400&q=85">
+<title>Na Hořičkách — Restaurace v Hořičkách</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%2317241d' width='100' height='100' rx='25'/%3E%3Ctext x='50' y='71' font-family='Georgia' font-size='68' text-anchor='middle' fill='%23e4c68e'%3EH%3C/text%3E%3C/svg%3E">
+<style>
+:root{--forest:#17241d;--forest2:#233429;--ink:#23261f;--cream:#f7f3eb;--paper:#f0ebe0;--gold:#d8bb85;--gold2:#b9955d;--muted:#7e857a;--line:rgba(34,48,38,.16);--serif:'Cormorant Garamond',Georgia,serif;--sans:'DM Sans',Arial,sans-serif}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:85px}
+body{margin:0;background:var(--cream);font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden} ::selection{background:var(--gold);color:var(--forest)}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer} img{display:block;max-width:100%;object-fit:cover}button,a{-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:3px solid var(--gold2);outline-offset:4px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.container{width:min(1440px,calc(100% - 112px));margin:auto}
+.eyebrow{display:flex;align-items:center;gap:14px;font-size:11px;font-weight:700;letter-spacing:.22em;text-transform:uppercase}
+.eyebrow:before{content:"";width:29px;height:1px;background:currentColor;opacity:.85}
+.section-title{font-family:var(--serif);font-weight:500;letter-spacing:-.045em;font-size:clamp(60px,6.6vw,112px);line-height:.87;margin:24px 0}
+.section-title em,.hero h1 em{font-weight:400;color:var(--gold2)}
+p{line-height:1.8}
+.btn{min-height:54px;padding:16px 26px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;gap:19px;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;transition:background .2s,transform .2s,color .2s,border-color .2s;border:1px solid transparent}
+.btn:hover{transform:translateY(-3px)} .btn svg{width:18px;height:18px;stroke:currentColor}
+.btn-gold{background:var(--gold);color:#1a241d}.btn-gold:hover{background:#f0d6a6}
+.btn-outline{border-color:rgba(255,255,255,.6);color:#fff;background:transparent}.btn-outline:hover{background:#fff;color:var(--forest)}
+.btn-dark{background:var(--forest);color:#fff}.btn-dark:hover{background:#324838}
+.text-link{display:inline-flex;align-items:center;gap:14px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;border-bottom:1px solid currentColor;padding:0 0 8px;transition:gap .2s}.text-link:hover{gap:23px}
+.preline{position:fixed;z-index:100;top:0;left:0;width:0;height:3px;background:var(--gold);pointer-events:none}
+.site-header{z-index:80;position:absolute;top:0;left:0;right:0;color:#fff;border-bottom:1px solid rgba(255,255,255,.22);transition:background .3s,border-color .3s,box-shadow .3s}
+.site-header.scrolled{position:fixed;background:rgba(19,32,24,.96);border-color:rgba(255,255,255,.09);backdrop-filter:blur(20px);box-shadow:0 10px 30px #0002}
+.header-inner{height:98px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+.brand{display:flex;align-items:center;gap:13px;min-width:210px}
+.brand-icon{width:43px;height:43px;display:grid;place-items:center;border:1px solid #ddc08a88;border-radius:50%;color:var(--gold);font:italic 36px/1 var(--serif);padding-top:4px}
+.brand-name{font:600 30px/.86 var(--serif);letter-spacing:-.05em}
+.brand-name small{display:block;font:600 9px/1 var(--sans);letter-spacing:.24em;text-transform:uppercase;margin-top:10px;color:#e7cfab}
+.nav-links{display:flex;gap:35px;align-items:center}
+.nav-links a{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;transition:color .2s;color:#fffd}
+.nav-links a:hover{color:var(--gold)}
+.header-call{border:1px solid #bfb5a355;padding:15px 20px;display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.11em;white-space:nowrap;transition:background .2s}
+.header-call:hover{background:#ffffff18}
+.header-call svg{width:16px;height:16px;stroke:var(--gold)}
+.menu-toggle{display:none;align-items:center;justify-content:center;flex-direction:column;gap:6px;width:48px;height:48px;background:none;border:1px solid #ffffff5b;border-radius:2px}
+.menu-toggle span{height:1.5px;width:20px;background:white;transition:transform .25s}
+.hero{background:#142117;min-height:800px;height:100svh;max-height:1100px;position:relative;display:flex;align-items:center;isolation:isolate;color:white;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:-3;background:#28352a url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=2000&q=85&fit=crop') center 52%/cover no-repeat;transform:scale(1.035);animation:heroZoom 18s ease-out forwards}
+.hero:before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,rgba(12,26,18,.93) 0%,rgba(14,29,20,.78) 36%,rgba(15,24,18,.23) 100%),linear-gradient(0deg,rgba(12,24,17,.65),transparent 36%)}
+.hero:after{content:"";position:absolute;inset:14px;border:1px solid #ffffff18;pointer-events:none;z-index:2}
+.hero-inner{padding-top:106px;position:relative;z-index:3}
+.hero .eyebrow{color:#e0c48f;margin-bottom:32px}
+.hero h1{font:500 clamp(82px,9.4vw,158px)/.84 var(--serif);letter-spacing:-.06em;max-width:940px;margin:0 0 35px;text-shadow:0 1px 12px #0002}
+.hero h1 em{display:block;color:#e9cca2}
+.hero-sub{font-size:15px;line-height:1.9;max-width:450px;color:#f5f2e8bd;margin-bottom:36px}
+.hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hero-side{position:absolute;right:6%;top:39%;display:flex;flex-direction:column;align-items:center;gap:16px;color:#f8f1e0ab}
+.side-label{font:500 11px var(--sans);text-transform:uppercase;letter-spacing:.24em;writing-mode:vertical-rl}
+.side-line{height:78px;width:1px;background:#fff9}
+.hero-bottom{position:absolute;bottom:0;left:0;width:100%;z-index:4;border-top:1px solid #ffffff2f}
+.hero-bottom-inner{height:105px;display:flex;align-items:center;justify-content:space-between}
+.hero-meta{display:flex;align-items:center;gap:18px}.hero-meta .meta-icon{width:39px;height:39px;flex:none;display:grid;place-items:center;border:1px solid var(--gold);border-radius:50%;color:var(--gold)}.hero-meta .meta-icon.meta-ornament:before{content:"";width:9px;height:9px;background:var(--gold);transform:rotate(45deg)}.hero-meta .meta-icon.meta-score{font:600 23px/1 var(--serif);letter-spacing:-.06em}
+.hero-meta b{display:block;font-weight:600;font-size:12px;letter-spacing:.02em}
+.hero-meta small{display:block;margin-top:5px;color:#f0ebd1b3;font-size:11px}
+.hero-bottom .separator{width:1px;height:36px;background:#ffffff4f;margin:0 26px}
+.scroll-cue{display:flex;align-items:center;gap:14px;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fffc}
+.scroll-cue:after{content:"↓";font-size:25px;font-weight:400;color:var(--gold)}
+.stamp{width:132px;height:132px;display:grid;place-items:center;border:1px solid #e3d4b3a0;border-radius:50%;font:italic 23px/.8 var(--serif);text-align:center;transform:rotate(-13deg);color:#e9d2ad;position:absolute;right:16%;bottom:150px}
+.stamp:before{content:"";position:absolute;inset:8px;border:1px dashed #e3d4b375;border-radius:50%}
+.stamp small{font:600 9px/1.5 var(--sans);text-transform:uppercase;letter-spacing:.17em}
+.ticker{background:var(--gold);color:var(--forest);overflow:hidden;white-space:nowrap;height:59px;display:flex;align-items:center}
+.ticker-track{display:flex;gap:36px;animation:marquee 40s linear infinite;width:max-content}
+.ticker span{font:700 12px var(--sans);text-transform:uppercase;letter-spacing:.23em}
+.ticker .ticker-divider{width:9px;height:9px;display:inline-block;flex:none;border:1.5px solid currentColor;transform:rotate(45deg)}
+.about{padding:156px 0 165px;background:var(--cream);position:relative;overflow:hidden}
+.about-grid{display:grid;grid-template-columns:1fr 1.04fr;gap:clamp(65px,8vw,150px);align-items:center}
+.about-visual{position:relative;padding:0 0 52px 50px}
+.about-visual img{width:100%;height:630px;object-fit:cover;filter:saturate(.75);box-shadow:0 24px 65px #1c302016}
+.about-visual:before{content:"";position:absolute;inset:-35px 45px 88px 0;border:1px solid var(--gold2);z-index:0;pointer-events:none}
+.about-visual img{position:relative}
+.about-caption{position:absolute;bottom:8px;left:65px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.about-number{position:absolute;right:-32px;bottom:85px;width:168px;height:168px;border-radius:50%;background:var(--forest);color:var(--gold);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:2;transform:rotate(9deg)}
+.about-number strong{font:italic 43px/.8 var(--serif)}
+.about-number small{text-align:center;font-size:9px;letter-spacing:.13em;text-transform:uppercase;margin-top:9px}
+.about-copy .eyebrow{color:var(--gold2)}
+.about-copy .section-title{margin:25px 0 35px}
+.about-copy>p{font-size:16px;max-width:510px;color:#65665e;line-height:1.98}
+.about-values{border-top:1px solid var(--line);margin:37px 0;padding-top:29px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.about-values strong{font:500 30px/1 var(--serif);display:block;margin-bottom:9px}
+.about-values span{font-size:12px;color:#77786b;line-height:1.7}
+.kitchen{background:var(--forest);color:var(--cream);padding:125px 0 148px;position:relative;overflow:hidden}
+.kitchen:before{content:"";position:absolute;right:-90px;top:-190px;width:600px;height:600px;border:1px solid #d4c6a51c;border-radius:50%;box-shadow:0 0 0 70px #d4c6a507,0 0 0 150px #d4c6a506}
+.kitchen-head{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:57px}
+.kitchen .eyebrow{color:var(--gold)}
+.kitchen .section-title{margin-bottom:0}
+.kitchen .section-title em{color:var(--gold)}
+.kitchen-head p{font-size:14px;color:#eee7d4a1;max-width:290px;margin:0 0 8px}
+.food-grid{display:grid;grid-template-columns:1.18fr 1fr 1fr;gap:20px}
+.food-card{position:relative;height:540px;overflow:hidden;background:#344338}
+.food-card:first-child{height:610px;margin-top:-35px}
+.food-card img{height:100%;width:100%;transition:transform .9s;filter:saturate(.83)}
+.food-card:hover img{transform:scale(1.075)}
+.food-card:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#09150ecd 0%,transparent 55%)}
+.food-card-content{position:absolute;bottom:36px;left:32px;right:25px;z-index:2}
+.food-number{font-size:11px;letter-spacing:.13em;color:var(--gold)}
+.food-card h3{font:500 clamp(35px,3.2vw,56px)/.92 var(--serif);letter-spacing:-.03em;margin:12px 0 10px}
+.food-card p{font-size:12px;color:#e9e6dfc0;margin:0}
+.kitchen-note{display:flex;justify-content:space-between;align-items:center;gap:25px;margin-top:42px;font-size:12px;color:#e1ddcb8c}
+.kitchen-note a{color:var(--gold);font-weight:700;border-bottom:1px solid var(--gold);padding-bottom:5px}
+.manifesto{padding:170px 0;text-align:center;background:#dfcfb2;color:#293328;overflow:hidden;position:relative}
+.manifesto:before,.manifesto:after{content:"";position:absolute;width:220px;height:220px;border:1px solid #9f81512b;border-radius:50%;top:70px;box-shadow:0 0 0 26px #9f815111,0 0 0 53px #9f81510b;pointer-events:none}
+.manifesto:before{left:-55px}.manifesto:after{right:-50px}
+.manifesto .eyebrow{justify-content:center;color:#675e46}
+.manifesto .section-title{max-width:1000px;margin:24px auto 32px;font-size:clamp(66px,8vw,136px)}
+.manifesto .section-title em{color:#8d6946}
+.manifesto p{max-width:520px;margin:auto;color:#5a5a4c;font-size:15px}
+.gallery{padding:138px 0 150px;background:var(--cream)}
+.gallery-top{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:55px}
+.gallery-top .eyebrow{color:#a17c4d}
+.gallery-top .section-title{margin-bottom:0}
+.gallery-top p{max-width:300px;color:#797b72;font-size:14px;line-height:1.9}
+.gallery-grid{display:grid;grid-template-columns:1.3fr .9fr .9fr;grid-template-rows:275px 275px;gap:15px}
+.gallery-tile{padding:0;background:#cfcfc4;border:0;position:relative;overflow:hidden;text-align:left}
+.gallery-tile:nth-child(1){grid-row:span 2}
+.gallery-tile:nth-child(4){grid-column:span 2}
+.gallery-tile img{width:100%;height:100%;transition:transform .55s;filter:saturate(.85)}
+.gallery-tile:hover img{transform:scale(1.08)}
+.gallery-tile:before{content:"";position:absolute;inset:0;background:#131c1280;opacity:0;z-index:1;transition:opacity .3s}
+.gallery-tile:after{content:"↗";position:absolute;right:25px;top:22px;color:white;font:35px/1 var(--serif);z-index:2;opacity:0;transition:opacity .3s}
+.gallery-tile:hover:before,.gallery-tile:hover:after{opacity:1}
+.gallery-tag{position:absolute;left:22px;bottom:20px;z-index:2;background:#f3ecdc;padding:9px 13px;color:#374034;font-size:10px;text-transform:uppercase;letter-spacing:.08em}
+.gallery-disclaimer{color:#969486;font-size:11px;text-align:right;margin-top:18px}
+.voices{background:#e9e3d7;padding:112px 0 115px}
+.voices-layout{display:grid;grid-template-columns:.7fr 1.3fr;gap:100px;align-items:center}
+.voices-side .eyebrow{color:#ae895d}
+.voices-side h2{font:500 58px/.95 var(--serif);letter-spacing:-.03em;margin:23px 0}
+.rating-mark{display:flex;align-items:baseline;gap:11px;margin-bottom:15px;color:#ad8856}.rating-mark strong{font:500 68px/.95 var(--serif);letter-spacing:-.06em}.rating-mark span{font:700 12px var(--sans);letter-spacing:.05em}.rating-mark i{width:8px;height:8px;display:inline-block;border:1.5px solid #ad8856;transform:rotate(45deg);margin-left:10px;vertical-align:2px}
+.voices-side p{font-size:13px;color:#787a6f}
+.voices-side a{color:var(--forest);font-weight:700;border-bottom:1px solid var(--forest);font-size:12px}
+.quote-area{padding-left:85px;border-left:1px solid #beb8a9}
+.quote-mark{font:130px/.68 var(--serif);color:#b89766}
+.quote-area blockquote{font:500 clamp(36px,4vw,65px)/1.08 var(--serif);letter-spacing:-.025em;margin:12px 0 29px}
+.quote-area small{color:#787a6f;font-size:12px}
+.visit{background:var(--forest);color:var(--cream);padding:140px 0}
+.visit-grid{display:grid;grid-template-columns:1fr 1fr;gap:10%;align-items:start}
+.visit .eyebrow{color:var(--gold)}
+.visit .section-title{margin-bottom:25px}
+.visit-lead{max-width:430px;color:#ded9c7ac;font-size:15px}
+.visit-address{font:500 35px/1.1 var(--serif);margin-top:37px}
+.visit-info{display:flex;flex-wrap:wrap;gap:12px;margin-top:29px}
+.visit-table{border:1px solid #d4d1bf35;padding:39px 42px;background:#ffffff06;position:relative}
+.visit-table:before{content:"OTEVÍRACÍ DOBA";position:absolute;top:-10px;left:20px;padding:0 18px;background:var(--forest);color:var(--gold);font:700 10px var(--sans);letter-spacing:.22em}
+.hours-row{display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-bottom:1px solid #ede3c524;padding:13px 0;font-size:13px}
+.hours-row:last-of-type{border:0}
+.hours-row span:last-child{font-weight:700;white-space:nowrap}
+.hours-row.muted{color:#a6ac9d}
+.visit-table p{font-size:11px;color:#ded9c790;line-height:1.7;margin:23px 0 0}
+.map-card{position:relative;overflow:hidden;height:250px;background:#e7e3d7;margin-top:28px;color:#25372a;display:flex;align-items:center;justify-content:center;border:1px solid #ffffff25}
+.map-card svg{position:absolute;width:100%;height:100%;opacity:.72}
+.map-card .map-pin{position:relative;z-index:2;background:var(--forest);color:white;padding:15px 20px;box-shadow:0 10px 40px #0002;text-align:center}
+.map-pin b{display:block;font:500 22px var(--serif)}.map-pin span{display:block;margin-top:3px;font:600 9px var(--sans);text-transform:uppercase;letter-spacing:.16em;color:var(--gold)}
+.map-card:after{content:"Otevřít navigaci ↗";position:absolute;bottom:15px;right:16px;color:#1b2b20;font-size:11px;font-weight:700;z-index:2;letter-spacing:.06em}
+.cta-band{padding:75px 0;background:var(--gold);color:var(--forest)}
+.cta-band .container{display:flex;justify-content:space-between;align-items:center;gap:40px}
+.cta-band h2{font:500 clamp(45px,5.2vw,75px)/.95 var(--serif);letter-spacing:-.04em;margin:0}
+.cta-band p{margin:15px 0 0;font-size:14px;color:#463f30}
+.cta-band .btn{white-space:nowrap}
+.site-footer{background:#111d16;color:#eee8d9;padding:90px 0 26px}
+.footer-grid{display:grid;grid-template-columns:1.4fr .7fr .9fr;gap:80px;padding-bottom:70px;border-bottom:1px solid #ffffff27}
+.footer-brand{font:500 57px/.82 var(--serif);letter-spacing:-.04em;margin:10px 0 25px}
+.footer-brand em{font-weight:400;color:var(--gold)}
+.footer-sub{max-width:280px;color:#c8d1c0a3;font-size:13px}
+.footer-heading{font:700 10px var(--sans);letter-spacing:.19em;color:var(--gold);text-transform:uppercase;margin:12px 0 26px}
+.footer-grid a:not(.brand){display:block;width:max-content;max-width:100%;margin:12px 0;font-size:13px;color:#e7ebdfc4;transition:color .2s}
+.footer-grid a:hover{color:var(--gold)}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;gap:15px;padding-top:28px;font-size:10px;color:#bac4b29c;line-height:1.8}
+.footer-bottom a{border-bottom:1px solid #ddd7bd76}
+.preview-mark{display:inline-block;width:7px;height:7px;border:1px solid currentColor;transform:rotate(45deg);vertical-align:1px}.preview-pill{position:fixed;left:16px;bottom:16px;z-index:70;background:#f4eee3;color:#293328;border:1px solid #c6aa81;border-radius:2px;box-shadow:0 6px 35px #0003;padding:8px 12px;font:700 9px var(--sans);letter-spacing:.09em;text-transform:uppercase}
+.mobile-call{display:none}
+.lightbox{position:fixed;inset:0;z-index:200;background:rgba(10,17,13,.96);display:none;align-items:center;justify-content:center;padding:70px 80px 85px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:100%;max-height:calc(100vh - 180px);object-fit:contain;box-shadow:0 20px 70px #0007}
+.lightbox-close,.lightbox-prev,.lightbox-next{position:absolute;display:grid;place-items:center;background:#ffffff13;color:white;border:1px solid #ffffff50;border-radius:50%;width:48px;height:48px;font-size:27px}
+.lightbox-close{right:35px;top:25px}.lightbox-prev{left:22px}.lightbox-next{right:22px}
+.lightbox-desc{position:absolute;bottom:35px;left:0;right:0;text-align:center;font-size:12px;letter-spacing:.09em;color:#f5eee8c9}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .85s ease,transform .85s ease}
+.reveal.visible{opacity:1;transform:none}
+@keyframes marquee{to{transform:translateX(-50%)}}@keyframes heroZoom{to{transform:scale(1)}}
+@media (max-width:1200px){.container{width:min(1200px,calc(100% - 70px))}.nav-links{gap:19px}.hero h1{font-size:clamp(76px,9.4vw,125px)}.about-grid{gap:65px}.about-visual img{height:520px}.about-number{right:-18px}.food-card{height:490px}.food-card:first-child{height:555px}}
+@media (max-width:900px){.header-inner{height:80px}.header-call{margin-left:auto}.menu-toggle{display:flex}.nav-links{display:none;position:absolute;top:80px;left:0;right:0;background:#17241d;padding:22px 35px 32px;box-shadow:0 15px 30px #0002;flex-direction:column;align-items:stretch;gap:0}.nav-links.open{display:flex}.nav-links a{padding:17px;border-bottom:1px solid #ffffff21;font-size:13px}.hero{min-height:720px}.hero-side{display:none}.stamp{right:8%;bottom:140px;transform:scale(.82) rotate(-13deg)}.about{padding:110px 0}.about-grid{grid-template-columns:1fr;gap:65px}.about-visual{max-width:570px}.about-visual img{height:520px}.about-copy{max-width:720px}.food-grid{grid-template-columns:1fr 1fr}.food-card,.food-card:first-child{height:465px;margin:0}.food-card:last-child{grid-column:span 2;height:390px}.food-card:last-child img{object-position:50% 58%}.kitchen-head{align-items:start}.kitchen-head p{max-width:210px}.gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:310px 260px 260px}.gallery-tile:nth-child(1){grid-row:span 2}.gallery-tile:nth-child(4){grid-column:span 2}.voices-layout{gap:40px}.quote-area{padding-left:40px}.visit-grid{gap:5%}.visit-table{padding:32px 25px}.footer-grid{gap:30px}}
+@media (max-width:650px){html{scroll-padding-top:68px}.container{width:calc(100% - 40px)}.header-inner{height:72px;gap:12px}.brand{min-width:0;gap:8px}.brand-icon{width:34px;height:34px;font-size:27px}.brand-name{font-size:23px}.brand-name small{font-size:7px;margin-top:7px}.header-call{display:none}.nav-links{top:72px}.hero{height:91svh;min-height:680px;max-height:950px;align-items:center}.hero-bg{background-position:57% center}.hero:before{background:linear-gradient(90deg,#0b1a11e5,#0b1a118c),linear-gradient(0deg,#0b1a11ab,transparent 38%)}.hero:after{inset:8px}.hero-inner{padding-top:20px;padding-bottom:50px}.hero .eyebrow{font-size:9px;letter-spacing:.16em;margin-bottom:26px}.hero h1{font-size:clamp(69px,16vw,100px);margin-bottom:23px}.hero-sub{font-size:13px;max-width:350px;margin-bottom:27px}.hero-actions{gap:9px}.btn{min-height:48px;padding:14px 15px;font-size:10px;gap:8px}.hero-actions .btn{flex:1}.hero-bottom-inner{height:74px}.hero-meta{gap:9px}.hero-meta .meta-icon{width:32px;height:32px}.hero-meta .meta-icon.meta-score{font-size:20px}.hero-meta b{font-size:10px}.hero-meta small{font-size:9px}.hero-bottom .separator{height:25px;margin:0 9px}.scroll-cue{display:none}.stamp{display:none}.ticker{height:46px}.ticker span{font-size:10px}.about{padding:88px 0 95px}.about-grid{gap:53px}.about-visual{padding:0 18px 30px 25px}.about-visual:before{inset:-18px 35px 58px 0}.about-visual img{height:395px}.about-caption{font-size:8px;left:28px;bottom:4px}.about-number{right:-3px;bottom:48px;width:110px;height:110px}.about-number strong{font-size:32px}.about-number small{font-size:7px}.section-title{font-size:clamp(62px,15vw,92px)}.about-copy .section-title{margin-bottom:22px}.about-copy>p{font-size:14px}.about-values{gap:16px;margin-top:24px}.about-values strong{font-size:25px}.about-values span{font-size:11px}.kitchen{padding:87px 0 95px}.kitchen-head{display:block;margin-bottom:36px}.kitchen-head p{max-width:100%;margin-top:21px}.food-grid{display:flex;flex-direction:column;gap:13px}.food-card,.food-card:first-child,.food-card:last-child{height:390px}.food-card-content{bottom:27px;left:24px}.food-card h3{font-size:42px}.kitchen-note{flex-direction:column;align-items:start;gap:12px;line-height:1.7}.manifesto{padding:95px 0}.manifesto:before,.manifesto:after{font-size:100px}.manifesto .section-title{font-size:clamp(61px,14vw,96px)}.manifesto p{font-size:13px}.gallery{padding:86px 0 95px}.gallery-top{display:block;margin-bottom:34px}.gallery-top p{max-width:100%;margin-top:22px}.gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:240px 210px 200px;gap:8px}.gallery-tile:nth-child(1){grid-column:span 2;grid-row:span 1}.gallery-tile:nth-child(4){grid-column:span 2}.gallery-tag{font-size:8px;left:9px;bottom:9px;padding:7px}.gallery-disclaimer{text-align:left;line-height:1.8}.voices{padding:82px 0 95px}.voices-layout{display:block}.voices-side h2{font-size:48px}.quote-area{margin-top:47px;padding-left:25px}.quote-mark{font-size:100px}.quote-area blockquote{font-size:41px}.visit{padding:93px 0}.visit-grid{display:block}.visit-table{margin-top:55px}.visit-address{font-size:31px}.visit-info{gap:9px}.map-card{height:220px}.cta-band{padding:62px 0}.cta-band .container{display:block}.cta-band h2{font-size:57px}.cta-band .btn{margin-top:24px}.site-footer{padding:74px 0 70px}.footer-grid{grid-template-columns:1fr 1fr;gap:28px;padding-bottom:42px}.footer-grid>div:first-child{grid-column:span 2}.footer-brand{font-size:52px}.footer-bottom{display:block}.footer-bottom span{display:block;margin:7px 0}.lightbox{padding:80px 18px}.lightbox img{max-height:65vh}.lightbox-prev,.lightbox-next{bottom:50px;width:42px;height:42px}.lightbox-prev{left:25px}.lightbox-next{right:25px}.lightbox-desc{bottom:64px;padding:0 70px;font-size:10px}.lightbox-close{top:20px;right:20px}.preview-pill{bottom:78px;left:10px;font-size:7px;padding:5px 8px}.mobile-call{position:fixed;display:flex;z-index:65;bottom:0;left:0;right:0;background:#d8bb85;color:#1a291d;height:65px;align-items:center;justify-content:center;gap:11px;font:700 12px var(--sans);text-transform:uppercase;letter-spacing:.12em;box-shadow:0 -10px 25px #1116}.mobile-call svg{width:18px;height:18px}.site-footer{padding-bottom:90px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.ticker-track,.hero-bg{animation:none}*{scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Restaurant","name":"Restaurace Na Hořičkách","description":"Tradiční česká restaurace v obci Hořičky.","address":{"@type":"PostalAddress","streetAddress":"Hořičky 3","addressLocality":"Hořičky","postalCode":"552 05","addressCountry":"CZ"},"telephone":"+420770674581","servesCuisine":"Czech","url":"https://navrhy.digitory.cz/na-horickach/","openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Wednesday","Thursday","Friday","Saturday"],"opens":"11:00","closes":"22:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":"Sunday","opens":"11:00","closes":"21:00"}]}
+</script>
+</head>
+<body>
+<div class="preline" id="scrollProgress" aria-hidden="true"></div>
+<header class="site-header" id="header">
+ <div class="container header-inner">
+  <a href="#uvod" class="brand" aria-label="Na Hořičkách, úvodní stránka"><span class="brand-icon" aria-hidden="true">H</span><span class="brand-name">Na Hořičkách<small>Restaurace &amp; hostinec</small></span></a>
+  <nav class="nav-links" id="nav" aria-label="Hlavní navigace"><a href="#o-nas">Náš příběh</a><a href="#kuchyne">Kuchyně</a><a href="#galerie">Galerie</a><a href="#kontakt">Kontakt</a></nav>
+  <a class="header-call" href="tel:+420770674581" aria-label="Zavolat na 770 674 581"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" stroke="currentColor"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3a2 2 0 0 1-.6 1.9L7 10.5a16 16 0 0 0 6.5 6.5l1.9-2a2 2 0 0 1 1.9-.6l3 .5A2 2 0 0 1 22 16.9Z"/></svg>Rezervovat stůl</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Otevřít nabídku" aria-expanded="false" aria-controls="nav"><span></span><span></span></button>
+ </div>
+</header>
+<main>
+<section class="hero" id="uvod" aria-label="Vítejte v restauraci Na Hořičkách">
+ <div class="hero-bg" aria-hidden="true"></div>
+ <div class="container hero-inner">
+  <div class="eyebrow">Obecní hostinec · Hořičky č. 3</div>
+  <h1>U dobrého<br>jídla se<br><em>nespěchá.</em></h1>
+  <p class="hero-sub">Poctivá česká kuchyně, pořádné porce a atmosféra, ve které je člověku dobře. Vítejte Na Hořičkách.</p>
+  <div class="hero-actions"><a class="btn btn-gold" href="tel:+420770674581">Rezervovat stůl <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a><a class="btn btn-outline" href="#kuchyne">Poznat naši kuchyni</a></div>
+ </div>
+ <div class="hero-side"><span class="side-label">Dobré jídlo. Dobří lidé. Dobré chvíle.</span><span class="side-line"></span></div>
+ <div class="stamp" aria-hidden="true"><div><small>Poctivě</small><br>od srdce<br><small>Na Hořičkách</small></div></div>
+ <div class="hero-bottom"><div class="container hero-bottom-inner">
+  <div style="display:flex;align-items:center"><div class="hero-meta"><span class="meta-icon meta-ornament" aria-hidden="true"></span><span><b>Hořičky 3</b><small>Malá obec. Velká pohostinnost.</small></span></div><span class="separator"></span><div class="hero-meta"><span class="meta-icon meta-score" aria-hidden="true">4,7</span><span><b>4,7 / 5 na Firmy.cz</b><small>Hodnocení našich hostů</small></span></div></div>
+  <a href="#o-nas" class="scroll-cue">Objevte náš příběh</a>
+ </div></div>
+</section>
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>Poctivá kuchyně</span><i class="ticker-divider"></i><span>Štědré porce</span><i class="ticker-divider"></i><span>Česká klasika</span><i class="ticker-divider"></i><span>Pohoda u stolu</span><i class="ticker-divider"></i><span>Poctivá kuchyně</span><i class="ticker-divider"></i><span>Štědré porce</span><i class="ticker-divider"></i><span>Česká klasika</span><i class="ticker-divider"></i><span>Pohoda u stolu</span><i class="ticker-divider"></i></div></div>
+<section class="about" id="o-nas">
+ <div class="container about-grid">
+  <div class="about-visual reveal">
+   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Hostinec_%28Ho%C5%99i%C4%8Dky%29.JPG/960px-Hostinec_%28Ho%C5%99i%C4%8Dky%29.JPG" alt="Skutečná historická fotografie hostince v Hořičkách z roku 2009" loading="lazy" width="960" height="720">
+   <div class="about-number"><strong>U nás</strong><small>jste vítáni</small></div>
+   <div class="about-caption">Hostinec Na Hořičkách · archivní fotografie z r. 2009</div>
+  </div>
+  <div class="about-copy reveal">
+   <div class="eyebrow">Místo s příběhem</div>
+   <h2 class="section-title">Tady má<br>pohostinnost<br><em>své kořeny.</em></h2>
+   <p>Jsou místa, kam člověk nejde jen na oběd. Jde si odpočinout, popovídat a dát si něco dobrého. Právě takové místo najdete v samém srdci Hořiček.</p>
+   <p>Náš hostinec je součástí místního života už po generace. V domě, který pamatuje i pobyty spisovatele Julia Zeyera, dnes pokračuje to nejdůležitější: setkávání lidí u společného stolu.</p>
+   <div class="about-values"><div><strong>Poctivě.</strong><span>Česká kuchyně bez zbytečných okolků.</span></div><div><strong>Pospolu.</strong><span>Místo pro oběd, večeři i společné chvíle.</span></div></div>
+   <a class="text-link" href="#kontakt">Přijďte nás navštívit <span aria-hidden="true">↗</span></a>
+  </div>
+ </div>
+</section>
+<section class="kitchen" id="kuchyne">
+ <div class="container">
+  <div class="kitchen-head reveal"><div><div class="eyebrow">S chutí na stole</div><h2 class="section-title">Dobré věci<br><em>nepotřebují spěch.</em></h2></div><p>Jídlo, na které se těšíte. Porce, po kterých neodcházíte hladoví. A chvíle, které stojí za to si užít.</p></div>
+  <div class="food-grid">
+   <article class="food-card reveal"><img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=900&q=84&fit=crop" alt="Ilustrační fotografie tradičního jídla" loading="lazy"><div class="food-card-content"><span class="food-number">01 — S láskou k tradici</span><h3>Česká<br>klasika</h3><p>Chutě, které dobře znáte a máte rádi.</p></div></article>
+   <article class="food-card reveal"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=900&q=84&fit=crop" alt="Ilustrační fotografie bohatě prostřeného stolu s jídlem" loading="lazy"><div class="food-card-content"><span class="food-number">02 — Tak akorát? Raději víc.</span><h3>Pořádné<br>porce</h3><p>U nás dobrým jídlem nešetříme.</p></div></article>
+   <article class="food-card reveal"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=84&fit=crop" alt="Ilustrační fotografie příjemného posezení v restauraci" loading="lazy"><div class="food-card-content"><span class="food-number">03 — Chvíle, které mají chuť</span><h3>Čas<br>spolu</h3><p>Posedět si, popovídat si a nikam nespěchat.</p></div></article>
+  </div>
+  <div class="kitchen-note"><span>Fotografie pokrmů jsou ilustrační. Aktuální nabídka se může měnit.</span><a href="tel:+420770674581">Zeptat se na dnešní nabídku ↗</a></div>
+ </div>
+</section>
+<section class="manifesto">
+ <div class="container reveal"><div class="eyebrow">Naše jednoduchá filozofie</div><h2 class="section-title">Hodně chuti.<br><em>Žádná velká věda.</em></h2><p>Na tom nejlepším není nic složitého. Dobré jídlo, přátelští lidé a stůl, u kterého je vždycky místo pro další příběh.</p></div>
+</section>
+<section class="gallery" id="galerie">
+ <div class="container">
+  <div class="gallery-top reveal"><div><div class="eyebrow">Atmosféra v obrazech</div><h2 class="section-title">Zastavte se.<br><em>Rozhlédněte se.</em></h2></div><p>Malá ochutnávka nálady, kterou máme rádi. Skutečný hostinec a ilustrační detaily dobrého stolování.</p></div>
+  <div class="gallery-grid">
+   <button class="gallery-tile reveal" type="button" data-full="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Hostinec_%28Ho%C5%99i%C4%8Dky%29.JPG/1280px-Hostinec_%28Ho%C5%99i%C4%8Dky%29.JPG" data-label="Skutečný hostinec v Hořičkách · archivní snímek 2009" aria-label="Otevřít fotografii budovy hostince"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Hostinec_%28Ho%C5%99i%C4%8Dky%29.JPG/960px-Hostinec_%28Ho%C5%99i%C4%8Dky%29.JPG" alt="Hostinec Na Hořičkách, skutečná fotografie z roku 2009" loading="lazy"><span class="gallery-tag">Náš hostinec · 2009</span></button>
+   <button class="gallery-tile reveal" type="button" data-full="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=1400&q=90" data-label="Pohoda u stolu · ilustrační fotografie" aria-label="Otevřít ilustrační fotografii restaurace"><img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=650&q=82" alt="Ilustrační fotografie útulného restauračního interiéru" loading="lazy"><span class="gallery-tag">Pohoda u stolu</span></button>
+   <button class="gallery-tile reveal" type="button" data-full="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1400&q=90" data-label="Poctivé porce · ilustrační fotografie" aria-label="Otevřít ilustrační fotografii jídla"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=650&q=82" alt="Ilustrační fotografie výběru jídel" loading="lazy"><span class="gallery-tag">Poctivé porce</span></button>
+   <button class="gallery-tile reveal" type="button" data-full="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1500&q=90" data-label="Čas na společné chvíle · ilustrační fotografie" aria-label="Otevřít ilustrační fotografii stolování"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1300&q=82" alt="Ilustrační fotografie atmosféry restaurace" loading="lazy"><span class="gallery-tag">Chvíle spolu</span></button>
+  </div>
+  <div class="gallery-disclaimer">Historická fotografie budovy: Boris7 / Wikimedia Commons, public domain (2009). Ostatní fotografie: ilustrační, Unsplash.</div>
+ </div>
+</section>
+<section class="voices">
+ <div class="container voices-layout">
+  <div class="voices-side reveal"><div class="eyebrow">Říkají naši hosté</div><h2>Nejlepší reklama?<br><em>Spokojení lidé.</em></h2><div class="rating-mark" aria-label="Hodnocení 4,7 z 5"><strong>4,7</strong><span>/ 5 <i aria-hidden="true"></i></span></div><p>4,7 z 5 · hodnocení na Firmy.cz</p><a href="https://www.firmy.cz/detail/13904488-restaurace-na-horickach-horicky.html" target="_blank" rel="noopener noreferrer">Prohlédnout skutečné recenze ↗</a></div>
+  <div class="quote-area reveal"><div class="quote-mark" aria-hidden="true">“</div><blockquote>Výborné jídlo, velké porce a milá a ochotná obsluha.</blockquote><small>— Z veřejného hodnocení návštěvníka na Firmy.cz, červenec 2026</small></div>
+ </div>
+</section>
+<section class="visit" id="kontakt">
+ <div class="container visit-grid">
+  <div class="reveal"><div class="eyebrow">Kde nás najdete</div><h2 class="section-title">Už víte, kam<br><em>na dobré jídlo?</em></h2><p class="visit-lead">Ať jedete na výlet, vracíte se domů nebo máte prostě chuť si dobře posedět — naše dveře jsou vám otevřené.</p><div class="visit-address">Restaurace Na Hořičkách<br>Hořičky 3, 552 05</div><div class="visit-info"><a class="btn btn-gold" href="tel:+420770674581">☎ &nbsp; 770 674 581</a><a class="btn btn-outline" href="https://mapy.com/cs/zakladni?q=Ho%C5%99i%C4%8Dky%203%2C%20552%2005" target="_blank" rel="noopener noreferrer">Navigovat ↗</a></div></div>
+  <div class="reveal"><div class="visit-table">
+   <div class="hours-row muted"><span>Pondělí</span><span>Zavřeno</span></div>
+   <div class="hours-row"><span>Úterý *</span><span>Ověřte telefonicky</span></div>
+   <div class="hours-row"><span>Středa</span><span>11:00–22:00</span></div>
+   <div class="hours-row"><span>Čtvrtek</span><span>11:00–22:00</span></div>
+   <div class="hours-row"><span>Pátek</span><span>11:00–22:00</span></div>
+   <div class="hours-row"><span>Sobota</span><span>11:00–22:00</span></div>
+   <div class="hours-row"><span>Neděle</span><span>11:00–21:00</span></div>
+   <p>* U úterý se údaje veřejných zdrojů rozcházejí. Před návštěvou doporučujeme zavolat. Otevírací doba se může během svátků a akcí měnit.</p>
+  </div><a class="map-card" href="https://mapy.com/cs/zakladni?q=Ho%C5%99i%C4%8Dky%203%2C%20552%2005" target="_blank" rel="noopener noreferrer" aria-label="Otevřít mapu a navigaci do restaurace Na Hořičkách">
+   <svg viewBox="0 0 620 270" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="620" height="270" fill="#d9decf"/><path d="M0 55Q130 85 225 40T620 105M-10 195Q160 100 260 161T630 220" stroke="#f6f6ed" stroke-width="36" fill="none"/><path d="M0 55Q130 85 225 40T620 105M-10 195Q160 100 260 161T630 220" stroke="#c1c8b7" stroke-width="1.5" fill="none" stroke-dasharray="4 12"/><path d="M360-20Q335 90 390 175T480 300M90-20Q200 60 130 165T160 300" stroke="#f7f6e9" stroke-width="20" fill="none"/><path d="M0 245Q130 215 250 250T630 245" fill="none" stroke="#aec5ad" stroke-width="30"/><circle cx="40" cy="46" r="40" fill="#bacdb4"/><circle cx="585" cy="60" r="65" fill="#afc6ab"/><circle cx="530" cy="212" r="45" fill="#afc6ab"/></svg><div class="map-pin"><b>Na Hořičkách</b><span>Hořičky 3 · Náchodsko</span></div>
+  </a></div>
+ </div>
+</section>
+<section class="cta-band"><div class="container"><div><h2>Jeden stůl. Spousta<br><em>dobrých důvodů přijít.</em></h2><p>Na oběd, na večeři, na chvíli pohody. Těšíme se na vás.</p></div><a class="btn btn-dark" href="tel:+420770674581">Zavolat a rezervovat <span aria-hidden="true">↗</span></a></div></section>
+</main>
+<footer class="site-footer">
+ <div class="container"><div class="footer-grid">
+  <div><div class="eyebrow" style="color:var(--gold)">Rádi vás uvidíme</div><div class="footer-brand">Na <em>Hořičkách.</em></div><p class="footer-sub">Tradiční hostinec, poctivá kuchyně a příjemné posezení v srdci Hořiček.</p></div>
+  <div><div class="footer-heading">Projděte se webem</div><a href="#uvod">Úvod</a><a href="#o-nas">Náš příběh</a><a href="#kuchyne">Kuchyně</a><a href="#galerie">Galerie</a><a href="#kontakt">Kontakt a otevírací doba</a></div>
+  <div><div class="footer-heading">Najdete nás</div><a href="https://mapy.com/cs/zakladni?q=Ho%C5%99i%C4%8Dky%203%2C%20552%2005" target="_blank" rel="noopener noreferrer">Hořičky 3, 552 05 Hořičky ↗</a><a href="tel:+420770674581">+420 770 674 581</a><a href="https://www.facebook.com/p/Hostinec-Ho%C5%99i%C4%8Dky-61577150903700/" target="_blank" rel="noopener noreferrer">Facebook ↗</a><a href="https://www.firmy.cz/detail/13904488-restaurace-na-horickach-horicky.html" target="_blank" rel="noopener noreferrer">Hodnocení hostů ↗</a></div>
+ </div><div class="footer-bottom"><span>© 2026 Na Hořičkách · Neoficiální vizuální návrh webu, nikoli web provozovatele.</span><span>Koncept vytvořilo <a href="https://www.digitory.cz/" target="_blank" rel="noopener noreferrer">Digitory</a>. Fotografie jídel jsou ilustrační. Archivní snímek hostince: Boris7, public domain.</span></div></div>
+</footer>
+<div class="preview-pill" title="Ukázka webu pro prezentaci návrhu"><span class="preview-mark" aria-hidden="true"></span> &nbsp; Digitory · návrh webu</div>
+<a class="mobile-call" href="tel:+420770674581"><svg viewBox="0 0 24 24" fill="none" stroke="#1a291d" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 3a2 2 0 0 1-.6 1.9L7 10.5a16 16 0 0 0 6.5 6.5l1.9-2a2 2 0 0 1 1.9-.6l3 .5A2 2 0 0 1 22 16.9Z"/></svg>Zavolat a rezervovat stůl</a>
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Prohlížení fotografií" id="lightbox" aria-hidden="true">
+ <button type="button" class="lightbox-close" aria-label="Zavřít fotografii" id="lightboxClose">×</button>
+ <button type="button" class="lightbox-prev" aria-label="Předchozí fotografie" id="lightboxPrev">‹</button>
+ <img id="lightboxImage" src="" alt="">
+ <button type="button" class="lightbox-next" aria-label="Další fotografie" id="lightboxNext">›</button>
+ <div class="lightbox-desc" id="lightboxDesc"></div>
+</div>
+<script>
+(function(){
+ const header=document.getElementById('header'),progress=document.getElementById('scrollProgress'),toggle=document.getElementById('menuToggle'),nav=document.getElementById('nav');
+ function onScroll(){header.classList.toggle('scrolled',window.scrollY>30);const doc=document.documentElement;const range=doc.scrollHeight-doc.clientHeight;progress.style.width=(range?window.scrollY/range*100:0)+'%';}
+ window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+ toggle.addEventListener('click',function(){const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));toggle.setAttribute('aria-label',open?'Zavřít nabídku':'Otevřít nabídku');});
+ nav.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');});});
+ document.addEventListener('click',function(e){if(!nav.contains(e.target)&&!toggle.contains(e.target)){nav.classList.remove('open');toggle.setAttribute('aria-expanded','false');}});
+ const els=document.querySelectorAll('.reveal');
+ if('IntersectionObserver' in window){const observer=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}})},{threshold:.08,rootMargin:'0px 0px -35px 0px'});els.forEach(function(el){observer.observe(el);});}else{els.forEach(function(el){el.classList.add('visible');});}
+ const tiles=Array.from(document.querySelectorAll('.gallery-tile')),lb=document.getElementById('lightbox'),lbImg=document.getElementById('lightboxImage'),desc=document.getElementById('lightboxDesc'),close=document.getElementById('lightboxClose');let active=0;let trigger=null;
+ function display(i){active=(i+tiles.length)%tiles.length;lbImg.src=tiles[active].dataset.full;lbImg.alt=tiles[active].querySelector('img').alt;desc.textContent=tiles[active].dataset.label+' · '+(active+1)+' / '+tiles.length;}
+ function open(i,el){trigger=el;display(i);lb.classList.add('open');lb.setAttribute('aria-hidden','false');document.body.classList.add('locked');close.focus();}
+ function hide(){lb.classList.remove('open');lb.setAttribute('aria-hidden','true');document.body.classList.remove('locked');lbImg.removeAttribute('src');if(trigger)trigger.focus();}
+ tiles.forEach(function(t,i){t.addEventListener('click',function(){open(i,t);});});
+ close.addEventListener('click',hide);
+ document.getElementById('lightboxPrev').addEventListener('click',function(){display(active-1);});
+ document.getElementById('lightboxNext').addEventListener('click',function(){display(active+1);});
+ lb.addEventListener('click',function(e){if(e.target===lb)hide();});
+ document.addEventListener('keydown',function(e){if(!lb.classList.contains('open'))return;if(e.key==='Escape')hide();if(e.key==='ArrowLeft')display(active-1);if(e.key==='ArrowRight')display(active+1);if(e.key==='Tab'){const focusables=[close,document.getElementById('lightboxPrev'),document.getElementById('lightboxNext')];const pos=focusables.indexOf(document.activeElement);if(e.shiftKey&&pos===0){focusables[2].focus();e.preventDefault();}else if(!e.shiftKey&&pos===2){focusables[0].focus();e.preventDefault();}}});
+})();
+</script>
+</body>
+</html>
