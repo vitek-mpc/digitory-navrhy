@@ -1,0 +1,161 @@
+name: Premium 3-page Digitory QA
+
+on:
+  push:
+    paths:
+      - '.github/workflows/qa-premium3.yml'
+      - '2026-10-19-premium/**'
+      - 'assets/premium3.*'
+      - 'assets/premium3-leads-2026-10-19.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for GitHub Pages latest publication
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,urllib.request,time
+          data=json.load(open("assets/premium3-leads-2026-10-19.json"))["firms"]
+          first=data[0]
+          url="https://navrhy.digitory.cz/2026-10-19-premium/"+first["slug"]+"/"
+          for i in range(28):
+            try:
+              with urllib.request.urlopen(url,timeout=15) as f:
+                body=f.read().decode("utf-8","replace")
+                if "/assets/premium3.css" in body and first["name"] in body:
+                  print("READY_PAGES",url,flush=True)
+                  break
+                print("Waiting for newest version",i,flush=True)
+            except Exception as e: print("Waiting for deploy",i,str(e)[:90],flush=True)
+            time.sleep(10)
+          else: raise SystemExit("Pages deployment did not become available")
+          PY
+      - name: Test all 204 HTML pages and source images
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import concurrent.futures,json,urllib.request,urllib.error,html,re,sys
+          firms=json.load(open("assets/premium3-leads-2026-10-19.json",encoding="utf8"))["firms"]
+          assert len(firms)==68
+          root="https://navrhy.digitory.cz"
+          def http(url):
+            req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 Digitory Premium Site QA"})
+            with urllib.request.urlopen(req,timeout=24) as r:
+              return r.status,r.read(850000).decode("utf-8","replace")
+          def check(item):
+            p,suffix=item
+            url=root+"/2026-10-19-premium/"+p["slug"]+"/"+suffix
+            try:
+              status,body=http(url)
+              issues=[]
+              if status!=200:issues.append("http "+str(status))
+              if p["name"] not in html.unescape(body):issues.append("name absent")
+              if "/assets/premium3.css" not in body:issues.append("css absent")
+              if "/assets/premium3.js" not in body:issues.append("js absent")
+              if "name=\"viewport\"" not in body:issues.append("viewport absent")
+              if "tel:" not in body:issues.append("phone link absent")
+              if suffix in ("","sluzby/") and 'href="/2026-10-19-premium/'+p["slug"]+'/kontakt/"' not in body:issues.append("contact link absent")
+              if suffix=="kontakt/" and p.get("email") and "mailto:" not in body:issues.append("email link absent")
+              if "<main " not in body:issues.append("main missing")
+              return url,issues,body
+            except Exception as e:return url,[repr(e)],""
+          pairs=[(p,s) for p in firms for s in ("","sluzby/","kontakt/")]
+          with concurrent.futures.ThreadPoolExecutor(max_workers=16) as ex:out=list(ex.map(check,pairs))
+          problems=[(url,msg) for url,msg,_ in out if msg]
+          for url,msg in problems:print("PAGE_FAIL",url,"|".join(msg),flush=True)
+          print("HTTP_SUMMARY","firms",len(firms),"pages",len(out),"passed",len(out)-len(problems),"fail",len(problems),flush=True)
+          for f in ("premium3.css","premium3.js"):
+            status,body=http(root+"/assets/"+f)
+            print("ASSET_OK",f,status,len(body),flush=True)
+          photos={src for _,_,body in out for src in re.findall(r'https://images\.unsplash\.com/(photo-[A-Za-z0-9-]+)',body)}
+          def get_photo(id):
+            try: return id,http('https://images.unsplash.com/'+id+'?auto=format&w=220&q=50')[0]
+            except Exception as e:return id,str(e)[:100]
+          with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:checks=list(ex.map(get_photo,sorted(photos)))
+          broken=[x for x in checks if x[1]!=200]
+          for id,err in broken:print("PHOTO_FAIL",id,err,flush=True)
+          print("PHOTO_SUMMARY","unique",len(photos),"failed",len(broken),flush=True)
+          if problems or broken:sys.exit(1)
+          PY
+      - name: Real Chrome smoke test on desktop and mobile
+        shell: bash
+        run: |
+          npm install --prefix /tmp/digitory-qa --no-save --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          mkdir -p /tmp/digitory-screens
+          cat >/tmp/digitory-qa/test.cjs <<'JS'
+          const {chromium}=require('playwright-core');
+          const fs=require('fs');
+          const firms=JSON.parse(fs.readFileSync('assets/premium3-leads-2026-10-19.json','utf8')).firms;
+          const exe=['/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium'].find(fs.existsSync);
+          if(!exe)throw Error('No Chrome available');
+          async function main(){
+            const browser=await chromium.launch({headless:true,executablePath:exe,args:['--no-sandbox','--disable-dev-shm-usage']});
+            let issues=[],screenSectors=new Set();
+            for(const viewport of [{width:1440,height:900},{width:390,height:844}]){
+              for(let k=0;k<firms.length;k+=4)await Promise.all(firms.slice(k,k+4).map(async p=>{
+                const page=await browser.newPage({viewport});
+                const errs=[],url='https://navrhy.digitory.cz/2026-10-19-premium/'+p.slug+'/';
+                try{
+                  const res=await page.goto(url,{waitUntil:'domcontentloaded',timeout:24000});
+                  if(res.status()!==200)errs.push('HTTP '+res.status());
+                  const cover=page.locator('.hero-img');
+                  await cover.evaluate(img=>new Promise(r=>{
+                    if(img.complete)return r();
+                    const t=setTimeout(r,5000);
+                    img.addEventListener('load',()=>{clearTimeout(t);r()},{once:true});
+                    img.addEventListener('error',()=>{clearTimeout(t);r()},{once:true});
+                  }));
+                  const info=await page.evaluate(()=>({
+                    overflow:document.documentElement.scrollWidth-innerWidth,
+                    img:document.querySelector('.hero-img')?.naturalWidth??0,
+                    name:document.querySelector('.brand-words strong')?.textContent,
+                    phone:!!document.querySelector('a[href^="tel:"]'),
+                    nav:document.querySelectorAll('#site-navigation a').length,
+                    h1:!!document.querySelector('main h1')
+                  }));
+                  if(info.overflow>5)errs.push('horizontal overflow: '+info.overflow);
+                  if(info.img===0)errs.push('broken hero image');
+                  if(!info.phone||info.nav<4||!info.h1)errs.push('missing navigation or CTA');
+                  if(!info.name || !info.name.includes(p.name))errs.push('wrong brand');
+                  if(viewport.width===390){
+                    const button=page.locator('.menu-button');
+                    if(!(await button.isVisible()))errs.push('mobile button hidden');
+                    else{
+                      await button.click();
+                      if(!(await page.locator('#site-navigation').evaluate(n=>n.classList.contains('open'))))errs.push('menu not opened');
+                      await button.click();
+                      if((await button.getAttribute('aria-expanded'))!=='false')errs.push('menu not closed');
+                    }
+                  }
+                  if(viewport.width===1440 && !screenSectors.has(p.sector)){
+                    await page.screenshot({path:'/tmp/digitory-screens/'+p.sector+'-'+p.slug+'.png',fullPage:true,timeout:15000});
+                    screenSectors.add(p.sector);
+                  }
+                }catch(e){errs.push(String(e).slice(0,150))}
+                if(errs.length){issues.push({slug:p.slug,viewport:viewport.width,issues:errs});console.log('BROWSER_FAIL',viewport.width,p.slug,errs.join(','))}
+                else console.log('BROWSER_PASS',viewport.width,p.slug);
+                await page.close();
+              }));
+            }
+            await browser.close();
+            console.log('BROWSER_SUMMARY',JSON.stringify({firms:firms.length,screens:firms.length*2,failed:issues.length,issues}));
+            if(issues.length)process.exit(1);
+          }
+          main().catch(e=>{console.error(e);process.exit(1)});
+          JS
+          node /tmp/digitory-qa/test.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: digitory-premium3-qa
+          path: /tmp/digitory-screens
+          retention-days: 7
+          if-no-files-found: ignore
