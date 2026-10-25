@@ -1,0 +1,278 @@
+{
+  "source": "Digitory_91_leadu_personalizovane_emaily(1).xlsx",
+  "note": "Internal creative correspondence mapping; NOT customer-provided copy or verified prices",
+  "requirements": {
+    "DIG-2026-0033": {
+      "flags": "RGTKVP",
+      "focus": "Barevná typologie, nové peelingy, microneedling a profesní kurzy"
+    },
+    "DIG-2026-0047": {
+      "flags": "RGTV",
+      "focus": "Vlasové proměny, techniky cakiyage a airtouch a tým stylistů"
+    },
+    "DIG-2026-0087": {
+      "flags": "RTP",
+      "focus": "Exosomy a PDRN, přístrojová péče a limitovaný podzimní rituál"
+    },
+    "DIG-2026-0010": {
+      "flags": "RGTV",
+      "focus": "Manikúra, pedikúra, ukázky práce a lidé za studiem"
+    },
+    "DIG-2026-0029": {
+      "flags": "RGTVWP",
+      "focus": "Vícetýdenní přístrojové programy, masážní balíčky a společná služba Proměna"
+    },
+    "DIG-2026-0080": {
+      "flags": "RGTVW",
+      "focus": "Víceoborová péče, tým specialistů, proměny a dárkové poukazy"
+    },
+    "DIG-2026-0032": {
+      "flags": "RGKP",
+      "focus": "PDRN mezoterapie, Korean Lash Lifting a profesní kurzy"
+    },
+    "DIG-2026-0044": {
+      "flags": "RG",
+      "focus": "Prodlužování vlasů, náročnější barvení a výsledky vlasových proměn"
+    },
+    "DIG-2026-0046": {
+      "flags": "RGCTV",
+      "focus": "Svatební účesy, dámské a pánské střihy, tým a dostupný ceník"
+    },
+    "DIG-2026-0071": {
+      "flags": "RGTWEX",
+      "focus": "Prémiové sety řas, solárium, oslavy a dárkové poukazy"
+    },
+    "DIG-2026-0031": {
+      "flags": "RGTP",
+      "focus": "Hydrodermabraze, radiofrekvence a kosmetické rituály"
+    },
+    "DIG-2026-0040": {
+      "flags": "RGKV",
+      "focus": "Kompletní grooming a individuální kurz stříhání psa"
+    },
+    "DIG-2026-0034": {
+      "flags": "RWVP",
+      "focus": "Medikosmetické, přístrojové a liftingové procedury"
+    },
+    "DIG-2026-0092": {
+      "flags": "RMEL",
+      "focus": "Podzimní menu, spolupráce s lokálními dodavateli a společenské akce"
+    },
+    "DIG-2026-0069": {
+      "flags": "RGWP",
+      "focus": "BB Glow, microneedling, permanentní make-up a tělové programy"
+    },
+    "DIG-2026-0009": {
+      "flags": "RMV",
+      "focus": "Rodinné asijské bistro a přehled jeho nabídky"
+    },
+    "DIG-2026-0076": {
+      "flags": "RGKWX",
+      "focus": "Materiály Staleks, školení, nehtová péče a dárkové poukazy"
+    },
+    "DIG-2026-0023": {
+      "flags": "RGCWV",
+      "focus": "Gelové a akrylové nehty, ceník a ukázky práce"
+    },
+    "DIG-2026-0028": {
+      "flags": "RTCV",
+      "focus": "Dámské, pánské a dětské účesy a objednání"
+    },
+    "DIG-2026-0065": {
+      "flags": "RGWX",
+      "focus": "Diagnostika vlasů, balayage, vlasový botox a brazilský keratin"
+    },
+    "DIG-2026-0072": {
+      "flags": "RGWP",
+      "focus": "Permanentní make-up, řasy a obočí, individuální péče"
+    },
+    "DIG-2026-0074": {
+      "flags": "RWPX",
+      "focus": "Nanoterapie, sezonní peeling, UV řasy a domácí péče"
+    },
+    "DIG-2026-0062": {
+      "flags": "RGWV",
+      "focus": "Manikúra, modeláž nehtů, řasy, obočí a depilace"
+    },
+    "DIG-2026-0077": {
+      "flags": "RGTV",
+      "focus": "Trichologie, prodlužování vlasů, nehty a tým stylistů"
+    },
+    "DIG-2026-0070": {
+      "flags": "RWV",
+      "focus": "Manikúra, nehtová modeláž a dárkové poukazy"
+    },
+    "DIG-2026-0048": {
+      "flags": "MLE",
+      "focus": "Café Zastávka a Café & Bistro Terakota, nabídka a společenské akce"
+    },
+    "DIG-2026-0039": {
+      "flags": "MDX",
+      "focus": "Zakázkové a svatební dorty, cukrářská výroba a objednávky"
+    },
+    "DIG-2026-0052": {
+      "flags": "RVP",
+      "focus": "Kosmetika, nehty, masáže a přístrojová péče"
+    },
+    "DIG-2026-0051": {
+      "flags": "RGTKV",
+      "focus": "Kosmetika, nehty a odborné kurzy v nových prostorách"
+    },
+    "DIG-2026-0037": {
+      "flags": "MDL",
+      "focus": "Matcha bar, dvě provozovny a rozvoz"
+    },
+    "DIG-2026-0083": {
+      "flags": "RTCK",
+      "focus": "Head Spa, tým, kosmetika, manikúra a masáže"
+    },
+    "DIG-2026-0088": {
+      "flags": "RGK",
+      "focus": "Hair Atelier BK Academy, workshopy a focení proměn"
+    },
+    "DIG-2026-0093": {
+      "flags": "RME",
+      "focus": "Restaurace, polední menu a poptávky na oslavy či firemní akce"
+    },
+    "DIG-2026-0042": {
+      "flags": "ME",
+      "focus": "Catering, pronájem prostor, svatby a oslavy"
+    },
+    "DIG-2026-0006": {
+      "flags": "MDV",
+      "focus": "Burgery, flammkuchen a rozvoz"
+    },
+    "DIG-2026-0090": {
+      "flags": "RGWV",
+      "focus": "Nail art, manikúra a nehtová modeláž v Jihlavě"
+    },
+    "DIG-2026-0085": {
+      "flags": "RL",
+      "focus": "Barbershop se dvěma pobočkami v Sokolově a Chebu"
+    },
+    "DIG-2026-0025": {
+      "flags": "RGCT",
+      "focus": "Synchronní manikúra a pedikúra ve čtyřech rukou"
+    },
+    "DIG-2026-0043": {
+      "flags": "RGP",
+      "focus": "Odborná pedikúra metodou KART"
+    },
+    "DIG-2026-0021": {
+      "flags": "RWV",
+      "focus": "Relaxační, sportovní a lymfatické masáže a masážní balíčky"
+    },
+    "DIG-2026-0012": {
+      "flags": "RGCW",
+      "focus": "Liftingová péče, řasy a přehled služeb"
+    },
+    "DIG-2026-0068": {
+      "flags": "RGCV",
+      "focus": "Osobní tréninky, tréninkové balíčky a společný nákup s trenérkou"
+    },
+    "DIG-2026-0079": {
+      "flags": "MEX",
+      "focus": "Bezobalový sortiment, dorty na objednávku a jóga-brunch"
+    },
+    "DIG-2026-0089": {
+      "flags": "RGTW",
+      "focus": "Svatební make-up, služby vícečlenného týmu a dárkové poukazy"
+    },
+    "DIG-2026-0024": {
+      "flags": "RGCTV",
+      "focus": "Kadeřnictví, barber, manikúra a vlasové kúry"
+    },
+    "DIG-2026-0013": {
+      "flags": "RGV",
+      "focus": "Balayage, zesvětlování, barvení a vlasové kúry"
+    },
+    "DIG-2026-0011": {
+      "flags": "RTV",
+      "focus": "Kosmetika, nehty, masáže a estetické procedury"
+    },
+    "DIG-2026-0081": {
+      "flags": "RGWV",
+      "focus": "Svatební a společenské účesy a vlasové proměny"
+    },
+    "DIG-2026-0095": {
+      "flags": "MD",
+      "focus": "Kebab, tortilly, nudle a vlastní rozvoz"
+    },
+    "DIG-2026-0008": {
+      "flags": "RMDV",
+      "focus": "Balkánská kuchyně, polední menu a rozvoz"
+    },
+    "DIG-2026-0057": {
+      "flags": "RGWP",
+      "focus": "Permanentní make-up, zahojené výsledky a informace o péči"
+    },
+    "DIG-2026-0053": {
+      "flags": "GCP",
+      "focus": "Elektroepilace, cukrová depilace a péče po ošetření"
+    },
+    "DIG-2026-0060": {
+      "flags": "RPV",
+      "focus": "Prémiová pleťová ošetření, obočí a lash lifting"
+    },
+    "DIG-2026-0018": {
+      "flags": "G",
+      "focus": "Péče o pleť, řasy, obočí a ukázky výsledků"
+    },
+    "DIG-2026-0058": {
+      "flags": "RGC",
+      "focus": "Prodlužování řas, lash lifting a péče po aplikaci"
+    },
+    "DIG-2026-0096": {
+      "flags": "RME",
+      "focus": "Bistro, brunch a odlišná denní a večerní nabídka"
+    },
+    "DIG-2026-0064": {
+      "flags": "RGC",
+      "focus": "Řasy, úprava obočí a péče po aplikaci"
+    },
+    "DIG-2026-0059": {
+      "flags": "RGWV",
+      "focus": "Maderoterapie, masážní kúry a dárkové poukazy"
+    },
+    "DIG-2026-0066": {
+      "flags": "RWP",
+      "focus": "Slow Touch, jemné dotekové rituály a masáž hlavy"
+    },
+    "DIG-2026-0045": {
+      "flags": "RGCW",
+      "focus": "Manikúra, pedikúra a přehled ceníku"
+    },
+    "DIG-2026-0019": {
+      "flags": "RC",
+      "focus": "Spirální stabilizace, individuální cvičení a rekondiční služby"
+    },
+    "DIG-2026-0055": {
+      "flags": "RW",
+      "focus": "Baňkování, tejpování a relaxační masáže"
+    },
+    "DIG-2026-0016": {
+      "flags": "RGWP",
+      "focus": "Přístrojová ošetření, maderoterapie a formování postavy"
+    },
+    "DIG-2026-0030": {
+      "flags": "R",
+      "focus": "Svatební líčení, kosmetická péče a kadeřnictví"
+    },
+    "DIG-2026-0078": {
+      "flags": "MT",
+      "focus": "Výběrová káva, matcha, zákusky a příběh kavárny"
+    },
+    "DIG-2026-0022": {
+      "flags": "RGC",
+      "focus": "Modeláž nehtů, nail art, P-Shine a parafínové zábaly"
+    },
+    "DIG-2026-0061": {
+      "flags": "RGC",
+      "focus": "Gel lak, modeláž nehtů a nail art"
+    },
+    "DIG-2026-0020": {
+      "flags": "RCP",
+      "focus": "Medicinální pedikúra a odborná péče o chodidla"
+    }
+  }
+}
