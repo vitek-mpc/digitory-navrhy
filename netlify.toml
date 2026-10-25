@@ -1,6 +1,18 @@
 [build]
   publish = "."
 
+[[redirects]]
+  from = "/klimapilot"
+  to = "https://klimapilot-demo.vercel.app/klimapilot"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/klimapilot/*"
+  to = "https://klimapilot-demo.vercel.app/klimapilot/:splat"
+  status = 200
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
