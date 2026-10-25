@@ -1,0 +1,159 @@
+name: Verify email-aligned 68 Digitory sites
+
+on:
+  push:
+    paths:
+      - '.github/workflows/qa-email-alignment.yml'
+      - '2026-10-19-premium/**'
+      - '.github/email-alignment-result.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  QA:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for exact newly published 5-page site
+        run: |
+          python3 - <<'PY'
+          import json,time,urllib.request,html
+          x=json.load(open(".github/email-alignment-result.json"))[0]
+          url="https://navrhy.digitory.cz/2026-10-19-premium/"+x["slug"]+"/"+x["detail_slug"]+"/"
+          for i in range(45):
+            try:
+              with urllib.request.urlopen(url,timeout=14) as r:
+                t=r.read().decode("utf8","replace")
+                if r.status==200 and "mail-alignment-style" in t and html.escape(x["focus"]) in t:
+                  print("DEPLOY_READY",url,flush=True)
+                  break
+            except Exception as err:
+              if i%3==0:print("WAIT",i,str(err)[:90],flush=True)
+            time.sleep(9)
+          else:raise SystemExit("New version not published")
+          PY
+      - name: Verify public HTML, internal links and images for all 340 pages
+        run: |
+          python3 - <<'PY'
+          import html,urllib.request,concurrent.futures,re,json,sys
+          xs=json.load(open(".github/email-alignment-result.json",encoding="utf8"))
+          assert len(xs)==68
+          root="https://navrhy.digitory.cz"
+          def get(url):
+            req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 Digitory Alignment QA"})
+            with urllib.request.urlopen(req,timeout=26) as r:
+              return r.status,r.read(1000000).decode("utf8","replace")
+          def test(task):
+            x,suffix=task
+            path="/2026-10-19-premium/"+x["slug"]+"/"
+            url=root+path+suffix
+            problems=[]
+            try:
+              status,body=get(url)
+              if status!=200:problems.append("HTTP "+str(status))
+              if x["name"] not in html.unescape(body):problems.append("Wrong brand")
+              if "mail-alignment-style" not in body:problems.append("Custom style missing")
+              if "alik-v4.css" not in body:problems.append("Previous week's visual not used")
+              if html.escape(x["focus"]) not in body:problems.append("Email focus missing")
+              for target in ("","sluzby/","o-firme/","kontakt/",x["detail_slug"]+"/"):
+                if 'href="'+path+target+'"' not in body:problems.append("Broken nav "+target)
+              if "tel:" not in body:problems.append("No call CTA")
+              if suffix=="" and 'class="cover-photo"' not in body:problems.append("Missing cover image")
+              if suffix==x["detail_slug"]+"/" and "mail-subsection" not in body:problems.append("No custom sections")
+              return url,problems,body
+            except Exception as err:return url,[str(err)[:160]],""
+          tasks=[(x,z) for x in xs for z in ("","sluzby/","o-firme/","kontakt/",x["detail_slug"]+"/")]
+          with concurrent.futures.ThreadPoolExecutor(max_workers=18) as pool:
+            result=list(pool.map(test,tasks))
+          bad=[(u,issues) for u,issues,_ in result if issues]
+          for url,issues in bad:print("PAGE_FAIL",url,issues,flush=True)
+          print("HTTP_SUMMARY",len(xs),"sites",len(tasks),"pages",len(tasks)-len(bad),"passed",len(bad),"failed",flush=True)
+          photos={i for _,_,body in result for i in re.findall(r'https://images\.unsplash\.com/(photo-[A-Za-z0-9-]+)',body)}
+          def test_photo(i):
+            try:
+              status,_=get("https://images.unsplash.com/"+i+"?auto=format&w=180&q=45")
+              return i,status
+            except Exception as e:return i,str(e)[:100]
+          with concurrent.futures.ThreadPoolExecutor(max_workers=7) as pool: checks=list(pool.map(test_photo,photos))
+          broken=[x for x in checks if x[1]!=200]
+          for x in broken:print("PHOTO_FAIL",x,flush=True)
+          print("PHOTO_SUMMARY",len(photos),"unique",len(broken),"failed",flush=True)
+          if bad or broken:sys.exit(1)
+          PY
+      - name: Chrome browser tests desktop and mobile
+        run: |
+          npm install --prefix /tmp/digqa --no-save --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          mkdir -p /tmp/digshots
+          cat >/tmp/digqa/test.cjs <<'JS'
+          const fs=require('fs'),{chromium}=require('playwright-core');
+          const xs=JSON.parse(fs.readFileSync('.github/email-alignment-result.json','utf8'));
+          const executablePath=['/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium'].find(fs.existsSync);
+          if(!executablePath)throw Error('No chrome binary');
+          (async()=>{
+            const browser=await chromium.launch({executablePath,headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+            const bad=[],screens=new Set();
+            for(const width of [1440,390]){
+              for(let i=0;i<xs.length;i+=5)await Promise.all(xs.slice(i,i+5).map(async x=>{
+                const page=await browser.newPage({viewport:{width,height:900}});
+                const err=[],base='https://navrhy.digitory.cz/2026-10-19-premium/'+x.slug+'/';
+                try{
+                  let response=await page.goto(base,{waitUntil:'domcontentloaded',timeout:28000});
+                  if(response.status()!==200)err.push('HTTP '+response.status());
+                  const pic=page.locator('.cover-photo');
+                  await pic.evaluate(img=>new Promise(ok=>{
+                    if(img.complete)return ok();
+                    const tm=setTimeout(ok,5500);
+                    img.addEventListener('load',()=>{clearTimeout(tm);ok()},{once:true});
+                    img.addEventListener('error',()=>{clearTimeout(tm);ok()},{once:true});
+                  }));
+                  const state=await page.evaluate(()=>({
+                    overflow:document.documentElement.scrollWidth-innerWidth,
+                    img:document.querySelector('.cover-photo')?.naturalWidth||0,
+                    focus:document.querySelector('.mail-focus')?.innerText||'',
+                    links:document.querySelectorAll('#mainmenu a').length,
+                  }));
+                  if(state.overflow>5)err.push('horizontal overflow '+state.overflow);
+                  if(!state.img)err.push('hero photo broken');
+                  if(!state.focus.includes(x.focus))err.push('personalization absent');
+                  if(state.links<6)err.push('custom link absent');
+                  if(width===390){
+                    const menu=page.locator('.menu-toggle');
+                    if(!(await menu.isVisible()))err.push('menu not visible');
+                    else{
+                      await menu.click();
+                      if(!(await page.locator('#mainmenu').evaluate(y=>y.classList.contains('open'))))err.push('menu failed to open');
+                      await menu.click();
+                      if((await menu.getAttribute('aria-expanded'))!=='false')err.push('menu failed to close');
+                    }
+                  }
+                  if(width===1440 && !screens.has(x.detail_slug)){
+                    await page.screenshot({path:'/tmp/digshots/'+x.slug+'.png',fullPage:true,timeout:17000});
+                    screens.add(x.detail_slug);
+                  }
+                  const dr=await page.goto(base+x.detail_slug+'/',{waitUntil:'domcontentloaded',timeout:27000});
+                  if(dr.status()!==200)err.push('detail HTTP '+dr.status());
+                  if(!(await page.locator('.mail-subsection').count()))err.push('detail module absent');
+                  const detail=await page.evaluate(()=>({overflow:document.documentElement.scrollWidth-innerWidth}));
+                  if(detail.overflow>5)err.push('detail horizontal overflow '+detail.overflow);
+                }catch(e){err.push(String(e).slice(0,160))}
+                if(err.length){bad.push({name:x.name,width,err});console.log('BROWSER_FAIL',x.slug,width,err.join(' | '))}
+                else console.log('BROWSER_PASS',x.slug,width);
+                await page.close();
+              }));
+            }
+            await browser.close();
+            console.log('BROWSER_SUMMARY',JSON.stringify({sites:xs.length,views:xs.length*2,failed:bad.length,issues:bad}));
+            if(bad.length)process.exit(1);
+          })().catch(e=>{console.error(e);process.exit(1)})
+          JS
+          node /tmp/digqa/test.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: digitory-email-aligned-screenshots
+          path: /tmp/digshots/
+          retention-days: 7
+          if-no-files-found: ignore
