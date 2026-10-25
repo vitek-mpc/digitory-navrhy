@@ -30,7 +30,7 @@ jobs:
           python3 .github/scripts/align_personalized_emails.py
           git diff --check
           python3 - <<'PY'
-          import json, pathlib
+          import json, pathlib, html
           root=pathlib.Path(".")
           xs=json.load(open(".github/email-alignment-result.json"))
           assert len(xs)==68
@@ -40,7 +40,7 @@ jobs:
               f=folder/path
               body=f.read_text(encoding="utf8")
               assert f.exists() and 'class="mainmenu"' in body and 'mail-alignment-style' in body,(f,"missing nav or style")
-              assert x["focus"] in body,(f,"missing tailored content")
+              assert html.escape(x["focus"]) in body,(f,"missing tailored content")
               assert ("/"+x["detail_slug"]+"/") in body,(f,"no link to detail page")
               if path=="index.html":assert 'class="cover-photo"' in body,(f,"missing full-size hero image")
           print("LOCAL_QA_SITES",len(xs),"LOCAL_QA_PAGES",len(xs)*5)
