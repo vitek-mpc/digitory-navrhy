@@ -19,3 +19,10 @@
     X-Robots-Tag = "noindex, nofollow"
     X-Frame-Options = "SAMEORIGIN"
     X-Content-Type-Options = "nosniff"
+
+# Standalone interactive Digitory AI Lab (do not rewrite existing demo routes).
+[[redirects]]
+  from = "/ai-lab/*"
+  to = "/ai-lab/index.html"
+  status = 200
+
