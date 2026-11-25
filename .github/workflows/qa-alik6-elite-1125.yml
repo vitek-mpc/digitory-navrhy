@@ -1,0 +1,73 @@
+name: Verify Alik 6.0 elite live sites
+on:
+  push:
+    paths:
+      - '.github/workflows/qa-alik6-elite-1125.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify public URLs and images
+        run: |
+          python3 - <<'PY'
+          import json,urllib.request,concurrent.futures,time,re,html
+          xs=json.load(open(".github/alik6-elite-1125-result.json"))
+          assert len(xs)==65
+          def get(u):
+            with urllib.request.urlopen(urllib.request.Request(u,headers={"User-Agent":"Mozilla/5.0 Digitory QA"}),timeout=18) as r:return r.status,r.read().decode("utf8","replace")
+          for i in range(35):
+            try:
+              status,body=get(xs[0]["url"])
+              if status==200 and "alik-elite-1125.css" in body:break
+            except Exception:pass
+            time.sleep(6)
+          else:raise SystemExit("Publication not yet available")
+          def test(x):
+            p,s=x;url=p["url"]+(s+"/" if s else "")
+            try:
+              status,body=get(url)
+              assert status==200 and p["name"] in html.unescape(body)
+              assert "alik-elite-1125.css" in body and "tel:" in body and "mailto:" in body
+              if not s:assert 'class="cover-photo"' in body
+              for t in p["pages"]:assert 'href="'+"/"+"/".join(p["url"].split("/")[3:]).rstrip("/")+"/"+(t+"/" if t else "")+'"' in body
+              return url,None,body
+            except Exception as e:return url,str(e),""
+          tasks=[(p,s) for p in xs for s in p["pages"]]
+          with concurrent.futures.ThreadPoolExecutor(max_workers=20) as ex:results=list(ex.map(test,tasks))
+          failures=[(u,e) for u,e,b in results if e is not None]
+          print("HTTP_SUMMARY",len(tasks),len(tasks)-len(failures),len(failures),flush=True)
+          for f in failures[:20]:print("FAIL",f,flush=True)
+          images={i for u,e,b in results for i in re.findall(r"images\.unsplash\.com/(photo-[\w-]+)",b)}
+          def photo(i):
+            try:
+              with urllib.request.urlopen("https://images.unsplash.com/"+i+"?w=160&auto=format",timeout=12) as r:return i,r.status
+            except Exception as e:return i,str(e)
+          with concurrent.futures.ThreadPoolExecutor(max_workers=8) as ex:pics=list(ex.map(photo,images))
+          print("PHOTO_SUMMARY",len(pics),[p for p in pics if p[1]!=200],flush=True)
+          if failures or any(p[1]!=200 for p in pics):raise SystemExit(1)
+          PY
+      - name: Responsive Chrome tests
+        run: |
+          npm install --prefix /tmp/alikqa --no-save --no-audit --no-fund playwright-core@1.57.0 >/dev/null
+          cat >/tmp/alikqa/check.cjs <<'JS'
+          const fs=require('fs'),{chromium}=require('playwright-core');
+          const xs=JSON.parse(fs.readFileSync('.github/alik6-elite-1125-result.json'));
+          const exe=['/usr/bin/google-chrome','/usr/bin/google-chrome-stable','/usr/bin/chromium'].find(fs.existsSync);
+          (async()=>{const b=await chromium.launch({headless:true,executablePath:exe,args:['--no-sandbox','--disable-dev-shm-usage']});const issues=[];
+          for(const width of [1440,390]){for(let i=0;i<xs.length;i+=6)await Promise.all(xs.slice(i,i+6).map(async x=>{const p=await b.newPage({viewport:{width,height:900}});try{
+          const r=await p.goto(x.url,{waitUntil:'domcontentloaded',timeout:25000});if(r.status()!==200)throw Error('HTTP '+r.status());
+          await p.locator('.cover-photo').evaluate(img=>new Promise(ok=>{if(img.complete)return ok();img.addEventListener('load',ok,{once:true});img.addEventListener('error',ok,{once:true});setTimeout(ok,5000)}));
+          const s=await p.evaluate(()=>({overflow:document.documentElement.scrollWidth-innerWidth,photo:document.querySelector('.cover-photo')?.naturalWidth||0,links:document.querySelectorAll('#mainmenu a').length}));
+          if(s.overflow>5||!s.photo||s.links<5)throw Error(JSON.stringify(s));
+          if(width===390){await p.locator('.menu-toggle').click();if(!(await p.locator('#mainmenu').evaluate(n=>n.classList.contains('open'))))throw Error('mobile menu failed')}
+          const rr=await p.goto(x.url+x.pages[3]+'/',{waitUntil:'domcontentloaded',timeout:25000});
+          if(rr.status()!==200||!(await p.locator('form[data-email]').count()))throw Error('form page missing');
+          }catch(e){issues.push([x.name,width,String(e)]);console.log('FAIL',x.name,width,String(e))}finally{await p.close()}}))}
+          await b.close();console.log('BROWSER_SUMMARY',JSON.stringify({views:xs.length*2,failed:issues.length,issues}));if(issues.length)process.exit(1)})().catch(e=>{console.error(e);process.exit(1)})
+          JS
+          node /tmp/alikqa/check.cjs
