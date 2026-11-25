@@ -1,0 +1,1 @@
+document.querySelectorAll('form[data-email]').forEach(f=>f.addEventListener('submit',e=>{e.preventDefault();if(!f.reportValidity())return;location.href='mailto:'+f.dataset.email+'?subject='+encodeURIComponent(f.dataset.subject)+'&body='+encodeURIComponent([...new FormData(f)].map(([k,v])=>k+': '+v).join('\n'))}));
